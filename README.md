@@ -25,7 +25,16 @@ npm install --global typescript-language-server prettier
 installed a bunch of stuff like buffer, vsnip stuff, add the require at the end, copied some config from a github dudes config, boom. 
 
 
-Dependencies:
+## Dependencies:
 brew install ripgrep
 npm install --global typescript-language-server prettier
 npm install --global some-sass-language-server
+
+## Set Up:
+Clone repository and replace your current `nvim` folder with this one
+mv ~/.config/nvim ~/.config/nvim-old
+
+## Install Plugins:
+Navigate to init.lua
+install plugins using Vim Plug
+:PlugInstall
