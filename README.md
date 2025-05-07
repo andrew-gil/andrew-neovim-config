@@ -9,17 +9,6 @@ installed omnisharp as csharp thing, but not working as intended
 need to install typescript, javascript lsp's
 installed neovim lsp config, see https://lsp-zero.netlify.app/blog/lsp-config-overview.html maybe for info on using it
 
-instead of tab management, using vim features, such as 
-:vsp (open new vertical pane)
-C-w h (switch to left pane)
-C-w l (switch to right pane)
-:bprev (go to previousy buffer in this pane)
-:bnext (go to next buffer in this pane)
-:q (close pane)
-:bd (unload current buffer)
-:ls or :buffers (see all buffers in memory)
-:buffer 3 (jump to buffer 3)
-
 for typescript lsp
 npm install --global typescript-language-server prettier
 installed a bunch of stuff like buffer, vsnip stuff, add the require at the end, copied some config from a github dudes config, boom. 
@@ -27,8 +16,7 @@ installed a bunch of stuff like buffer, vsnip stuff, add the require at the end,
 
 ## Dependencies:
 brew install ripgrep
-npm install --global typescript-language-server prettier
-npm install --global some-sass-language-server
+npm install --global typescript-language-server prettier some-sass-language-server
 
 ## Set Up:
 Clone repository and replace your current `nvim` folder with this one
