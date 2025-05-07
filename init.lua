@@ -1,0 +1,21 @@
+require('andrewgil')
+local vim = vim
+local Plug = vim.fn['plug#']
+
+vim.call('plug#begin')
+-- Plug('https://github.com/example/example.git')
+Plug('OmniSharp/omnisharp-vim')
+Plug('nvim-lua/plenary.nvim')
+Plug('nvim-telescope/telescope.nvim', { ['tag'] = '0.1.8' })
+Plug('morhetz/gruvbox')
+Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
+Plug('neovim/nvim-lspconfig')
+Plug('hrsh7th/cmp-nvim-lsp')
+Plug('hrsh7th/nvim-cmp')
+Plug('hrsh7th/cmp-buffer')
+Plug('hrsh7th/vim-vsnip')
+Plug('hrsh7th/cmp-vsnip')
+Plug('hrsh7th/nvim-cmp')
+vim.call('plug#end')
+vim.cmd('silent! colorscheme gruvbox')
+require('lsp')
