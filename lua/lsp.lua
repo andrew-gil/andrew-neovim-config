@@ -40,7 +40,11 @@ require('lspconfig').somesass_ls.setup {
 	capabilities = require('cmp_nvim_lsp').default_capabilities()
 }	
 
-vim.cmd([[nnoremap gd :lua vim.lsp.buf.definition()<CR>]])
-vim.cmd([[nnoremap K :lua vim.lsp.buf.hover()<CR>]])
-vim.cmd([[nnoremap <leader>. :lua vim.lsp.buf.code_action()<CR>]])
-vim.cmd([[nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>]])
+vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition,
+  { noremap = true, silent = true, desc = 'LSP definition'} )
+vim.keymap.set('n', '<leader>hv', vim.lsp.buf.hover,
+  { noremap = true, silent = true, desc = 'LSP hover'} )
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action,
+  { noremap = true, silent = true, desc = 'LSP code action'} )
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename,
+  { noremap = true, silent = true, desc = 'LSP rename'} )
