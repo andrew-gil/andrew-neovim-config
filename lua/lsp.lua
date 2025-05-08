@@ -48,3 +48,5 @@ vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action,
   { noremap = true, silent = true, desc = 'LSP code action'} )
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename,
   { noremap = true, silent = true, desc = 'LSP rename'} )
+vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format,
+  { noremap = true, silent = true, desc = 'LSP format'} )
