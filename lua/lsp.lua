@@ -39,6 +39,8 @@ require('lspconfig').ts_ls.setup {
 
 require('lspconfig').somesass_ls.setup {
 	capabilities = caps,
+  filetypes = { "scss", "sass", "css" },
+  cmd = { "some-sass-language-server", "--stdio" }
 }	
 
 require('lspconfig').omnisharp.setup {
