@@ -31,6 +31,7 @@ On windows, may have to adjust file path targetting omnisharp in lsp.lua
 | **Buffer Management**       | `<leader>[[` · `<leader>]]`               | Switch to **previous / next buffer**                                    |
 
 - `<leader>` : your leader key (space by default)  
+use :DiffviewOpen and :DiffviewClose to look at git diff
 
 ### thoughts for future config
 could install brew install lua-language-server, but pain on windows. If using lua-language-server, update config
