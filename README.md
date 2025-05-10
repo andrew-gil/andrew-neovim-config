@@ -16,7 +16,7 @@ On windows, may have to adjust file path targetting omnisharp in lsp.lua
 ### Keybinds
 | Category                   | Mapping                                   | Action                                                                  |
 |----------------------------|-------------------------------------------|-------------------------------------------------------------------------|
-| **File Explorer**           | `<leader>re`                              | Return to the **file‑tree** view                                        |
+| **File Explorer**           | `<leader>re`                             | Return to the **file‑tree** view                                        |
 | **Telescope**              | `<leader><leader>`                        | **Find files**                                                          |
 |                            | `<leader>gs`                              | **Git status** picker                                                   |
 |                            | `<leader>gr`                              | **Live grep** (search text across files)                                |
@@ -28,7 +28,9 @@ On windows, may have to adjust file path targetting omnisharp in lsp.lua
 | **Window / Pane Navigation** | `<leader>ll` · `<leader>hh` · `<leader>kk` · `<leader>jj` | Move to the pane **right / left / up / down**                           |
 |                            | `:vsp`                                    | Open a **vertical split**                                               |
 |                            | `:vertical resize ±N`                     | **Resize** the current split by *N* columns                             |
-| **Buffer Management**       | `<leader>[[` · `<leader>]]`               | Switch to **previous / next buffer**                                    |
+| **Buffer Management**       | `<leader>[[` · `<leader>]]`              | Switch to **previous / next buffer**                                   |
+|                            | `<leader>bu`                              | use Telescope buffer picker                                             |
+|                            | `<C-d>`                                   | Telescope buffer picker, delete buffer                                  |
 
 - `<leader>` : your leader key (space by default)  
 use :DiffviewOpen and :DiffviewClose to look at git diff

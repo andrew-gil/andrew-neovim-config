@@ -6,6 +6,8 @@ vim.opt.softtabstop = 2  -- <Tab> while typing feels like 4 spaces
 vim.opt.expandtab   = true  -- convert <Tab> presses to spaces (optional)
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cs",          -- applies to :setfiletype cs or *.cs detection

@@ -3,6 +3,8 @@ local actions = require('telescope.actions')
 vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope find in git'})
 vim.keymap.set('n', '<leader>gr', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>bu', builtin.buffers, { desc = 'Telescope buffer'})
+
 require('telescope').setup {
   defaults = {
     mappings = {
