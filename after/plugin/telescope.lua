@@ -23,4 +23,14 @@ require('telescope').setup {
       },
     },
   },
+  extensions = {
+    ["ui-select"] = {
+      -- optionally tweak the dropdown theme:
+      require("telescope.themes").get_dropdown {
+        previewer = false,
+        -- etc…
+      }
+    }
+  },
 }
+require('telescope').load_extension("ui-select")
