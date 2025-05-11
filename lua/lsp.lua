@@ -1,47 +1,51 @@
 local cmp = require('cmp')
 
 cmp.setup({
-   snippet = {
-      expand = function(args)
+  snippet = {
+    expand = function(args)
       vim.fn["vsnip#anonymous"](args.body)
-      end,
-   },
-   mapping = {
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      ['<Tab>'] = function(fallback)
+    end,
+  },
+  mapping = {
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = function(fallback)
       if cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback()
-        end
-      end,
-      ['<S-Tab>'] = function(fallback)
-      if cmp.visible() then
-          cmp.select_prev_item()
-        else
-          fallback()
-        end
+        cmp.select_next_item()
+      else
+        fallback()
       end
-   },
-   sources = {
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
-      { name = 'buffer' },
-   }
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'buffer' },
+  }
 })
 
 local caps = require('cmp_nvim_lsp').default_capabilities()
 
 require('lspconfig').ts_ls.setup {
-   capabilities = caps, 
+  capabilities = caps,
 }
 
 require('lspconfig').somesass_ls.setup {
-	capabilities = caps,
+  capabilities = caps,
   filetypes = { "scss", "sass", "css" },
   cmd = { "some-sass-language-server", "--stdio" }
-}	
+}
+
+require('lspconfig').lua_ls.setup {
+  capabilities = caps,
+}
 
 --require('lspconfig').omnisharp.setup {
 --  capabilities = caps,
@@ -58,12 +62,12 @@ require('lspconfig').somesass_ls.setup {
 --}
 
 vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition,
-  { noremap = true, silent = true, desc = 'LSP definition'} )
+  { noremap = true, silent = true, desc = 'LSP definition' })
 vim.keymap.set('n', '<leader>hv', vim.lsp.buf.hover,
-  { noremap = true, silent = true, desc = 'LSP hover'} )
+  { noremap = true, silent = true, desc = 'LSP hover' })
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action,
-  { noremap = true, silent = true, desc = 'LSP code action'} )
+  { noremap = true, silent = true, desc = 'LSP code action' })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename,
-  { noremap = true, silent = true, desc = 'LSP rename'} )
+  { noremap = true, silent = true, desc = 'LSP rename' })
 vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format,
-  { noremap = true, silent = true, desc = 'LSP format'} )
+  { noremap = true, silent = true, desc = 'LSP format' })
