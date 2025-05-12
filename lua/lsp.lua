@@ -32,6 +32,8 @@ cmp.setup({
 })
 
 local caps = require('cmp_nvim_lsp').default_capabilities()
+require('mason').setup()
+--require('mason-lspconfig').setup()
 
 require('lspconfig').ts_ls.setup {
   capabilities = caps,
@@ -48,12 +50,12 @@ require('lspconfig').lua_ls.setup {
 }
 
 --require('lspconfig').omnisharp.setup {
---  capabilities = caps,
+--  capabilities                = caps,
 --
 --  -- point to the binary if it’s on your PATH (Mason, vim‑plug, or dotnet‑tool)
 --  -- If you used `dotnet tool install -g omnisharp`: just `"omnisharp"`
 --  -- If Mason: vim.fn.stdpath('data') .. '/mason/bin/omnisharp'
---  cmd = { vim.fn.expand("~/.cache/omnisharp-vim/omnisharp-roslyn/run"), "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+--  cmd                         = { vim.fn.expand("~/.cache/omnisharp-vim/omnisharp-roslyn/run"), "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
 --
 --  -- optional: enable Roslyn analyzers, etc.
 --  enable_editorconfig_support = true,
