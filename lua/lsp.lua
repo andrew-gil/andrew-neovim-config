@@ -32,8 +32,6 @@ cmp.setup({
 })
 
 local caps = require('cmp_nvim_lsp').default_capabilities()
-require('mason').setup()
---require('mason-lspconfig').setup()
 
 require('lspconfig').ts_ls.setup {
   capabilities = caps,
