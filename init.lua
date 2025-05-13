@@ -5,7 +5,7 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin')
 --Plug('OmniSharp/omnisharp-vim')
 Plug('nvim-lua/plenary.nvim')
-Plug('nvim-telescope/telescope.nvim', { ['tag'] = '0.1.8' })
+Plug('nvim-telescope/telescope.nvim')
 Plug('nvim-telescope/telescope-ui-select.nvim')
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 Plug('neovim/nvim-lspconfig')
