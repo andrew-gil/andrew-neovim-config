@@ -10,7 +10,7 @@ Plug('hrsh7th/nvim-cmp')
 Plug('hrsh7th/cmp-buffer')
 Plug('hrsh7th/vim-vsnip')
 Plug('hrsh7th/cmp-vsnip')
-Plug('OmniSharp/omnisharp-vim')
+Plug('https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git')
 -- general plugins
 Plug('nvim-lua/plenary.nvim') --prereq for telescope
 Plug('nvim-telescope/telescope.nvim') -- for searching and such

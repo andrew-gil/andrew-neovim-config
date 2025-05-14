@@ -1,6 +1,7 @@
 ## Dependencies:
 brew install ripgrep
-npm install --global typescript-language-server prettier some-sass-language-server
+brew install lua-language-server (optional, only if need lua)
+npm install --global typescript-language-server prettier some-sass-language-server @angular/language-server
 
 ## Set Up:
 Clone repository and replace your current `nvim` folder with this one
@@ -10,8 +11,10 @@ mv ~/.config/nvim ~/.config/nvim-old
 Navigate to init.lua
 install plugins using Vim Plug
 :PlugInstall
-:OmniSharpInstall
-On windows, may have to adjust file path targetting omnisharp in lsp.lua
+
+To install omnisharp for c#, dowload a release from the releases link (I have downloaded omnisharp-osx-arm-64-net6.0. Place into desired path, configure path in lsp.lua to hit either OmniSharp or run. If access error, make sure run/OmniSharp is executable by `chmod +x ~/[path]`
+https://github.com/omnisharp/omnisharp-roslyn#downloading-omnisharp
+if hitting error code 131, try uninstalling and reinstalling dotnet from the official website. Then, run `echo export DOTNET_ROOT=/usr/local/dotnet' >> ~/.zprofile` then `exec $SHELL -l # reload shell`. Check that the DOTNET_ROOT is set by running `dotnet --info`. 
 
 ### Keybinds
 | Category                   | Mapping                                   | Action                                                                  |
@@ -36,5 +39,4 @@ On windows, may have to adjust file path targetting omnisharp in lsp.lua
 use :DiffviewOpen and :DiffviewClose to look at git diff
 
 ### thoughts for future config
-could install brew install lua-language-server, but pain on windows. If using lua-language-server, update config
 could dotnet tool --global install csharpier, but pain. Would rather just stay lightweight. Use rider if you want everything.

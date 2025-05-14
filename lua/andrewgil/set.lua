@@ -9,6 +9,7 @@ vim.opt.termguicolors = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cs",          -- applies to :setfiletype cs or *.cs detection
   callback = function()
