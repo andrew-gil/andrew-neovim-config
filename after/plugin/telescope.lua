@@ -5,6 +5,7 @@ vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Telescope 
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope find in git'})
 vim.keymap.set('n', '<leader>gr', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>bf', builtin.buffers, { desc = 'Telescope buffer'})
+vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { noremap = true, silent = true, desc = 'Telescope LSP references' })
 
 require('telescope').setup {
   defaults = {
@@ -25,6 +26,9 @@ require('telescope').setup {
         ["<C-k>"] = actions.move_selection_previous,
       },
     },
+    file_ignore_patterns = {
+      "node_modules"
+    }
   },
   extensions = {
     ["ui-select"] = {
