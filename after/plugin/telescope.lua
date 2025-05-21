@@ -2,10 +2,13 @@ local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
 
 vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope find in git'})
+vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope find in git' })
 vim.keymap.set('n', '<leader>gr', builtin.live_grep, { desc = 'Telescope live grep' })
-vim.keymap.set('n', '<leader>bf', builtin.buffers, { desc = 'Telescope buffer'})
-vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { noremap = true, silent = true, desc = 'Telescope LSP references' })
+vim.keymap.set('n', '<leader>bf', builtin.buffers, { desc = 'Telescope buffer' })
+vim.keymap.set('n', '<leader>fr', builtin.lsp_references,
+  { noremap = true, silent = true, desc = 'Telescope LSP references' })
+vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics,
+  { desc = "Diagnostics (Telescope)" })
 
 require('telescope').setup {
   defaults = {
