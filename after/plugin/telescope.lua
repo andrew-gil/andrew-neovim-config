@@ -7,11 +7,12 @@ vim.keymap.set('n', '<leader>gr', builtin.live_grep, { desc = 'Telescope live gr
 vim.keymap.set('n', '<leader>bf', builtin.buffers, { desc = 'Telescope buffer' })
 vim.keymap.set('n', '<leader>fr', builtin.lsp_references,
   { noremap = true, silent = true, desc = 'Telescope LSP references' })
-vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics,
+vim.keymap.set("n", "<leader>fd", builtin.diagnostics,
   { desc = "Diagnostics (Telescope)" })
 
 require('telescope').setup {
   defaults = {
+    path_display={"smart"},
     mappings = {
       i = {
         -- kill the old <C-n>/<C-p> if you want:
