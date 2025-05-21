@@ -18,6 +18,8 @@ Plug('nvim-telescope/telescope-ui-select.nvim') -- for applying telescope ui to 
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- treesitter
 Plug('sindrets/diffview.nvim') -- for viewing git diff
 Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
+--Plug('nvim-tree/nvim-web-devicons') -- for file tree icons
+--Plug('nvim-tree/nvim-tree.lua') -- for viewing file tree
 -- color schemes
 Plug('morhetz/gruvbox')
 Plug('lifepillar/vim-solarized8')

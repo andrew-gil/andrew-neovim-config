@@ -37,7 +37,7 @@ require('telescope').setup {
         previewer = false,
         -- etc…
       }
-    }
+    },
   },
 }
 require('telescope').load_extension("ui-select")

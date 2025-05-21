@@ -28,7 +28,7 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
 |                            | `<leader>ca`                              | **Code action** (quick‑fix / import)                                    |
 |                            | `<leader>fm`                              | **Format** current buffer                                               |
-| **Window / Pane Navigation** | `<leader>ll` · `<leader>hh` · `<leader>kk` · `<leader>jj` | Move to the pane **right / left / up / down**                           |
+| **Window / Pane Navigation** | `<leader>wl` · `<leader>wh` · `<leader>wk` · `<leader>wj` | Move to the pane **right / left / up / down**                           |
 |                            | `:vsp`                                    | Open a **vertical split**                                               |
 |                            | `:vertical resize ±N`                     | **Resize** the current split by *N* columns                             |
 | **Buffer Management**       | `<leader>[[` · `<leader>]]`              | Switch to **previous / next buffer**                                   |
