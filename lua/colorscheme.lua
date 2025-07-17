@@ -8,4 +8,4 @@ require("catppuccin").setup({
     which_key   = true,
   },
 })
-vim.cmd('silent! colorscheme tokyonight-night')
+vim.cmd('silent! colorscheme catppuccin')
