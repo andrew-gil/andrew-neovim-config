@@ -1,5 +1,5 @@
 require("catppuccin").setup({
-  transparent_background = false,
+  transparent_background = true,
   integrations = {
     cmp         = true,
     fidget      = true,
@@ -8,4 +8,4 @@ require("catppuccin").setup({
     which_key   = true,
   },
 })
-vim.cmd('silent! colorscheme catppuccin')
+vim.cmd('silent! colorscheme catppuccin-mocha')
