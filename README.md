@@ -34,6 +34,10 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 | **Buffer Management**       | `<leader>[[` · `<leader>]]`              | Switch to **previous / next buffer**                                   |
 |                            | `<leader>bu`                              | use Telescope buffer picker                                             |
 |                            | `<C-d>`                                   | Telescope buffer picker, delete buffer                                  |
+|                            | `<leader><Tab>`                           | Switch to **alternate buffer** (Ctrl-6)                                |
+| **Diagnostics**            | `<leader>do`                              | **Toggle** diagnostics on/off                                          |
+|                            | `<leader>dd`                              | **Toggle** between virtual text (current line) and virtual lines       |
+|                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 
 - `<leader>` : your leader key (space by default)  
 use :DiffviewOpen and :DiffviewClose to look at git diff
