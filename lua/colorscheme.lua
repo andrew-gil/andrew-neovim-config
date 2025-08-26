@@ -12,7 +12,7 @@ catppuccin.setup({
 })
 
 require("tokyonight").setup({
-  transparent = true
+  transparent = false
 })
 
 require("rose-pine").setup({
@@ -23,6 +23,6 @@ require("rose-pine").setup({
   }
 })
 
-vim.cmd('silent! colorscheme tokyonight-night')
-vim.g.moonflyTransparent = true
+vim.cmd('silent! colorscheme rose-pine-main')
+vim.g.moonflyTransparent = false
 vim.g.solarized_termtrans = 1

@@ -19,6 +19,7 @@ Plug('nvim-telescope/telescope-ui-select.nvim') -- for applying telescope ui to 
 -- nice to haves
 Plug('sindrets/diffview.nvim') -- for viewing git diff
 Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
+Plug('fabijanzulj/blame.nvim') -- for viewing git blame
 -- color schemes
 Plug('morhetz/gruvbox')
 Plug('lifepillar/vim-solarized8')
@@ -31,5 +32,6 @@ Plug('rose-pine/neovim', {['as'] = 'rose-pine'})
 vim.call('plug#end')
 require('colorscheme')
 require('lsp')
+require('blametoggle')
 require('colorizer').setup()
 require('diffview').setup()
