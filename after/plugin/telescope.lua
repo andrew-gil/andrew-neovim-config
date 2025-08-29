@@ -9,6 +9,7 @@ vim.keymap.set('n', '<leader>fr', builtin.lsp_references,
   { noremap = true, silent = true, desc = 'Telescope LSP references' })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics,
   { desc = "Diagnostics (Telescope)" })
+vim.keymap.set('n', '<leader>cs', builtin.colorscheme, { desc = 'Telescope colorscheme picker' })
 
 require('telescope').setup {
   defaults = {

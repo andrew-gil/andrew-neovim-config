@@ -1,18 +1,11 @@
+local vim = vim
 local catppuccin = require("catppuccin")
 catppuccin.setup({
   transparent_background = false,
-  integrations = {
-    cmp         = true,
-    fidget      = true,
-    lsp_trouble = true,
-    telescope   = true,
-    which_key   = true,
-    treesitter  = true,
-  },
 })
 
 require("tokyonight").setup({
-  transparent = false
+  transparent = true
 })
 
 require("rose-pine").setup({
@@ -23,6 +16,7 @@ require("rose-pine").setup({
   }
 })
 
-vim.cmd('silent! colorscheme rose-pine-main')
-vim.g.moonflyTransparent = false
+vim.g.moonflyTransparent = true
 vim.g.solarized_termtrans = 1
+
+vim.cmd('silent! colorscheme rose-pine-main')
