@@ -1,3 +1,4 @@
+local vim = vim
 vim.wo.relativenumber = true
 vim.opt.clipboard     = "unnamedplus"
 vim.opt.tabstop       = 2  -- literal <Tab> == 4 spaces when files are read

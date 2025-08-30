@@ -1,3 +1,4 @@
+local vim = vim
 local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
 

@@ -1,7 +1,7 @@
 local vim = vim
 local catppuccin = require("catppuccin")
 catppuccin.setup({
-  transparent_background = false,
+  transparent_background = true,
 })
 
 require("tokyonight").setup({
