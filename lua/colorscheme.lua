@@ -17,6 +17,7 @@ require("rose-pine").setup({
 })
 
 vim.g.moonflyTransparent = true
+vim.g.moonflyVirtualTextColor = true
 vim.g.solarized_termtrans = 1
 
 vim.cmd('silent! colorscheme rose-pine-main')
