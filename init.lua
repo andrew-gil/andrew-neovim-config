@@ -28,7 +28,8 @@ Plug('catppuccin/nvim')
 Plug('folke/tokyonight.nvim')
 Plug('bluz71/vim-moonfly-colors')
 Plug('rose-pine/neovim', {['as'] = 'rose-pine'})
--- ai lol
+-- review.nvim
+Plug('~/code-2025/review.nvim.git/main')
 vim.call('plug#end')
 require('colorscheme')
 require('lsp')
