@@ -2,6 +2,12 @@ local vim = vim
 local catppuccin = require("catppuccin")
 catppuccin.setup({
   transparent_background = true,
+  custom_highlights = function(colors)
+    return {
+      DiffAdd = { bg = colors.green, fg = colors.base },
+      DiffRemove = { bg = colors.red, fg = colors.base }
+    }
+  end
 })
 
 require("tokyonight").setup({
@@ -20,4 +26,4 @@ vim.g.moonflyTransparent = true
 vim.g.moonflyVirtualTextColor = true
 vim.g.solarized_termtrans = 1
 
-vim.cmd('silent! colorscheme rose-pine-main')
+vim.cmd('silent! colorscheme catppuccin-mocha')

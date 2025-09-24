@@ -14,3 +14,7 @@ vim.keymap.set('n', '<leader><Tab>', '<C-6>')
 --reevaluate how much I like these. I generally don't like hiding functionality that's not obviously an abstraction, and could be misinterpreted as the actual functionality
 vim.keymap.set('n', "<C-u>", "<C-u>zz")
 vim.keymap.set('n', "<C-d>", "<C-d>zz")
+
+-- CLI command legend
+vim.keymap.set('n', '<leader>cl', function() require('legend').toggle_legend() end,
+  { desc = 'Toggle CLI legend' })
