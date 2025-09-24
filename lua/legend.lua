@@ -109,6 +109,10 @@ local commands = {
     { cmd = "list-sessions", desc = "Display all active tmux sessions with their details" },
     { cmd = "kill-session -t session-name", desc = "Terminate specified tmux session and all its windows" },
   },
+  ["Vim"] = {
+    { cmd = ":%s/old/new/g", desc = "Find and replace all occurrences in entire file" },
+    { cmd = ":s/<specific text>\\(.*\\)= */<new specific text using \\1>", desc = "On a highlighted region of text, do a specific transformation, using \\1 to indicate the first capture group, meaning whatever you captured using that fighting one eyed kirby" },
+  },
 }
 
 local legend_buf = nil
