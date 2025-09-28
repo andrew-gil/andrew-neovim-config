@@ -1,5 +1,5 @@
-local review = require('review')
-local vim = vim
-vim.keymap.set('n', '<leader>rr', review.review)
-vim.keymap.set('n', '<leader>rc', review.review_close)
-vim.keymap.set('n', '<leader>rt', review.review_terminate)
+--local review = require('review')
+--local vim = vim
+--vim.keymap.set('n', '<leader>rr', review.review)
+--vim.keymap.set('n', '<leader>rc', review.review_close)
+--vim.keymap.set('n', '<leader>rt', review.review_terminate)

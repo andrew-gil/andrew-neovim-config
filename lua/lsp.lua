@@ -33,27 +33,35 @@ cmp.setup({
 
 local caps = require('cmp_nvim_lsp').default_capabilities()
 
-require('lspconfig').ts_ls.setup {
+vim.lsp.config['ts_ls'] = {
   capabilities = caps,
   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
 }
 
-require('lspconfig').somesass_ls.setup {
+vim.lsp.enable({'ts_ls'})
+
+vim.lsp.config['somesass_ls'] = {
   capabilities = caps,
   filetypes = { "scss", "sass", "css" },
   cmd = { "some-sass-language-server", "--stdio" }
 }
 
-require('lspconfig').lua_ls.setup {
+vim.lsp.enable({'somesass_ls'})
+
+vim.lsp.config['lua_ls'] = {
   capabilities = caps,
 }
 
-require('lspconfig').angularls.setup {
+vim.lsp.enable({'lua_ls'})
+
+vim.lsp.config['angularls'] = {
   capabilities = caps,
 }
 
-local omnisharp_bin = "/Users/andrewgil/omnisharp-osx-arm64-net6/OmniSharp"
-require("lspconfig").omnisharp.setup({
+vim.lsp.enable({'angularls'})
+
+local omnisharp_bin = "/usr/bin/omnisharp"
+vim.lsp.config['omnisharp'] = {
   cmd = {
     omnisharp_bin,
     "--languageserver",
@@ -70,7 +78,9 @@ require("lspconfig").omnisharp.setup({
     },
     Sdk = { IncludePrereleases = true },
   },
-})
+}
+
+vim.lsp.enable({'omnisharp'})
 
 vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition,
   { noremap = true, silent = true, desc = 'LSP definition' })
