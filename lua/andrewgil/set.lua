@@ -1,23 +1,23 @@
 local vim = vim
 vim.wo.relativenumber = true
 vim.opt.clipboard     = "unnamedplus"
-vim.opt.tabstop       = 2  -- literal <Tab> == 4 spaces when files are read
-vim.opt.shiftwidth    = 2  -- >> << == 4 spaces
-vim.opt.softtabstop   = 2  -- <Tab> while typing feels like 4 spaces
+vim.opt.tabstop       = 4  -- literal <Tab> == 4 spaces when files are read
+vim.opt.shiftwidth    = 4  -- >> << == 4 spaces
+vim.opt.softtabstop   = 4  -- <Tab> while typing feels like 4 spaces
 vim.opt.expandtab     = true -- convert <Tab> presses to spaces (optional)
 vim.opt.background    = "dark"
 vim.opt.termguicolors = true
 vim.opt.ignorecase    = true
 vim.opt.smartcase     = true
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "cs", -- applies to :setfiletype cs or *.cs detection
-  callback = function()
-    vim.opt_local.tabstop     = 4
-    vim.opt_local.shiftwidth  = 4
-    vim.opt_local.softtabstop = 4
-  end,
-})
+--vim.api.nvim_create_autocmd("FileType", {
+--  pattern = "cs", -- applies to :setfiletype cs or *.cs detection
+--  callback = function()
+--    vim.opt_local.tabstop     = 4
+--    vim.opt_local.shiftwidth  = 4
+--    vim.opt_local.softtabstop = 4
+--  end,
+--})
 
 vim.diagnostic.config({ virtual_text = { current_line = true }, virtual_lines = false })
 
