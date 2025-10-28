@@ -22,15 +22,15 @@ function cmp.diagnostic_status()
     local levels = vim.diagnostic.severity
     local errors = #vim.diagnostic.get(0, {severity = levels.ERROR})
     if errors > 0 then
-        return hi_pattern:format('DiagnosticError', errors ..' ⏹ ')
+        return hi_pattern:format('DiagnosticError', errors ..'  ')
     end
 
     local warnings = #vim.diagnostic.get(0, {severity = levels.WARN})
     if warnings > 0 then
-        return hi_pattern:format('DiagnosticWarn', warnings ..' ▲ ')
+        return hi_pattern:format('DiagnosticWarn', warnings ..'  ')
     end
 
-    return hi_pattern:format('DiagnosticOk', ' ⬤')
+    return hi_pattern:format('DiagnosticOk', '  ')
 end
 
 function cmp.line_position()
