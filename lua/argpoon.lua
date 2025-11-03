@@ -1,4 +1,4 @@
---homemade harpoon, plus status line changes
+--homemade harpoon, requires statusline.lua for full functionality
 
 vim.keymap.set('n', '<leader>hh', function()
     vim.cmd(vim.fn.argc().."argadd %")
@@ -11,9 +11,38 @@ vim.keymap.set('n', '<leader>hd', function()
     vim.cmd("argdelete %")
 end)
 
--- todo display the output into a floating buffer like codecompanion does. Just order it. Parse the output such that only file names are displayed, not paths. Unless, their are duplicate file names with different paths; then display the full path.
 vim.keymap.set('n', '<leader>hl', function()
     vim.cmd.args()
+end)
+
+vim.keymap.set('n', '<leader>hs', function()
+	local cur_bufname = vim.fn.bufname()
+	local args = {}
+    for i = 0,vim.fn.argc()-1 do
+		args[i+1] = vim.fn.argv(i)
+    end
+    vim.ui.select(args, {
+        prompt = 'Jump To Argpooned Buffer:',
+		format_item = function(item)
+			for index, value in ipairs(args) do
+				if value == item then
+					local i = #value
+					while i > 0 and string.sub(value, i, i) ~= "/" do
+						i = i-1
+					end
+					if value == cur_bufname then
+						return "["..index.."]: " .. string.sub(value, i+1)
+					end
+					return " " .. index .. " : " .. string.sub(value, i+1)
+				end
+			end
+			return item
+		end
+    }, function(_, index)
+		if index ~= nil then
+			vim.cmd('silent! '..(index)..'argument')
+		end
+    end)
 end)
 
 -- todo write a function that allows me to switch the position of an argument. For example, 7 goes to 2, 2 goes to 3, everything moves up
