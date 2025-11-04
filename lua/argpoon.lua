@@ -9,6 +9,7 @@ end)
 
 vim.keymap.set('n', '<leader>hd', function()
     vim.cmd("argdelete %")
+    vim.cmd("redrawstatus")
 end)
 
 vim.keymap.set('n', '<leader>hl', function()
@@ -22,20 +23,23 @@ vim.keymap.set('n', '<leader>hs', function()
 		args[i+1] = vim.fn.argv(i)
     end
     vim.ui.select(args, {
-        prompt = 'Jump To Argpooned Buffer:',
+        prompt = 'Jump To Argpooned Buffer: ',
 		format_item = function(item)
-			for index, value in ipairs(args) do
-				if value == item then
-					local i = #value
-					while i > 0 and string.sub(value, i, i) ~= "/" do
-						i = i-1
-					end
-					if value == cur_bufname then
-						return "["..index.."]: " .. string.sub(value, i+1)
-					end
-					return " " .. index .. " : " .. string.sub(value, i+1)
-				end
-			end
+            if item == cur_bufname then
+                return "[" .. item .. "]"
+            end
+			--for index, value in ipairs(args) do
+			--	if value == item then
+			--		local i = #value
+			--		while i > 0 and string.sub(value, i, i) ~= "/" do
+			--			i = i-1
+			--		end
+			--		if value == cur_bufname then
+			--			return "["..index.."]: " .. string.sub(value, i+1)
+			--		end
+			--		return " " .. index .. " : " .. string.sub(value, i+1)
+			--	end
+			--end
 			return item
 		end
     }, function(_, index)

@@ -1,5 +1,5 @@
 ## Dependencies:
-brew install ripgrep
+brew install fzf ripgrep
 brew install lua-language-server (optional, only if need lua)
 npm install --global typescript-language-server prettier some-sass-language-server @angular/language-server
 
@@ -20,11 +20,13 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 | Category                   | Mapping                                   | Action                                                                  |
 |----------------------------|-------------------------------------------|-------------------------------------------------------------------------|
 | **File Explorer**           | `<leader>re`                             | Return to the **file‑tree** view                                        |
-| **Telescope**              | `<leader><leader>`                        | **Find files**                                                          |
+| **fzf.lua**                | `<leader><leader>`                        | **Find files**                                                          |
 |                            | `<leader>gs`                              | **Git status** picker                                                   |
 |                            | `<leader>gr`                              | **Live grep** (search text across files)                                |
-|                            | *Inside Telescope* &nbsp;—&nbsp;`Ctrl‑j / Ctrl‑k` | Move **down / up** in the results list                                  |
+|                            | `<leader>bf`                              | **Buffers** picker                                                      |
+|                            | `<leader>cs`                              | **Colorscheme** picker                                                  |
 | **LSP Actions**            | `<leader>gd`                              | **Go to definition**                                                    |
+|                            | `<leader>fr`                              | **Find references** (LSP)                                               |
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
 |                            | `<leader>ca`                              | **Code action** (quick‑fix / import)                                    |
 |                            | `<leader>fm`                              | **Format** current buffer                                               |
@@ -32,12 +34,13 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `:vsp`                                    | Open a **vertical split**                                               |
 |                            | `:vertical resize ±N`                     | **Resize** the current split by *N* columns                             |
 | **Buffer Management**       | `<leader>[[` · `<leader>]]`              | Switch to **previous / next buffer**                                   |
-|                            | `<leader>bu`                              | use Telescope buffer picker                                             |
-|                            | `<C-d>`                                   | Telescope buffer picker, delete buffer                                  |
 |                            | `<leader><Tab>`                           | Switch to **alternate buffer** (Ctrl-6)                                |
 | **Diagnostics**            | `<leader>do`                              | **Toggle** diagnostics on/off                                          |
-|                            | `<leader>dd`                              | **Toggle** between virtual text (current line) and virtual lines       |
+|                            | `<leader>dd`                              | **Open floating** diagnostic window                                    |
+|                            | `<leader>de`                              | **Toggle** between virtual text and virtual lines                      |
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
+|                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
+|                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
 
 - `<leader>` : your leader key (space by default)  
