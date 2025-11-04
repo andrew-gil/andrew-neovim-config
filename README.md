@@ -41,10 +41,12 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 |                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
 |                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
+| **Git/Diff (unified.nvim)** | `<leader>dv`                              | **Toggle** unified diff view                                           |
+|                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
 
-- `<leader>` : your leader key (space by default)  
-use :DiffviewOpen and :DiffviewClose to look at git diff
+- `<leader>` : your leader key (space by default)
+- Use `<leader>dv` to toggle unified diff view, `<leader>uc` to clear diff markings
 
 ### thoughts for future config
 could dotnet tool --global install csharpier, but pain. Would rather just stay lightweight. Use rider if you want everything.
