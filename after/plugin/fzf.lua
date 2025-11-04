@@ -7,6 +7,8 @@ vim.keymap.set('n', '<leader>gr', fzf.live_grep)
 vim.keymap.set('n', '<leader>bf', fzf.buffers)
 vim.keymap.set('n', '<leader>fr', fzf.lsp_references,
   { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>fr', fzf.lsp_implementations,
+  { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>db", fzf.diagnostics_document)
 vim.keymap.set("n", "<leader>dw", fzf.diagnostics_workspace)
 vim.keymap.set('n', '<leader>cs', fzf.colorschemes)
