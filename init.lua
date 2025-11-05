@@ -16,6 +16,7 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 Plug('ibhagwan/fzf-lua')
 -- nice to haves
 Plug('axkirillov/unified.nvim')
+Plug('sindrets/diffview.nvim')
 Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
 Plug('fabijanzulj/blame.nvim')
 -- color schemes

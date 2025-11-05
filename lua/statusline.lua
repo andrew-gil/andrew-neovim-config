@@ -39,7 +39,6 @@ end
 
 function cmp.harpoon()
     -- if in arg list, return the arg number. Else, return something else
-    -- todo return different color for each number, for more visual acuity
     for i = 0,vim.fn.argc()-1 do
         if (vim.fn.argv(i) == vim.fn.bufname()) then
             return hi_pattern:format('Special', ' 󰣉 ' .. i + 1 .. ' ')

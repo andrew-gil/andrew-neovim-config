@@ -9,16 +9,6 @@ vim.opt.background    = "dark"
 vim.opt.termguicolors = true
 vim.opt.ignorecase    = true
 vim.opt.smartcase     = true
-
---vim.api.nvim_create_autocmd("FileType", {
---  pattern = "cs", -- applies to :setfiletype cs or *.cs detection
---  callback = function()
---    vim.opt_local.tabstop     = 4
---    vim.opt_local.shiftwidth  = 4
---    vim.opt_local.softtabstop = 4
---  end,
---})
-
 vim.diagnostic.config({ virtual_text = { current_line = true }, virtual_lines = false })
 
 vim.keymap.set('n', '<leader>do', function()

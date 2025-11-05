@@ -2,7 +2,7 @@ local vim = vim
 local unified = require('unified')
 unified.setup()
 
-vim.keymap.set('n', '<leader>dv', function()
+vim.keymap.set('n', '<leader>uv', function()
     unified.toggle()
 end, { desc = 'Toggle Unified Diff View' })
 

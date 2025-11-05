@@ -25,6 +25,7 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>gr`                              | **Live grep** (search text across files)                                |
 |                            | `<leader>bf`                              | **Buffers** picker                                                      |
 |                            | `<leader>cs`                              | **Colorscheme** picker                                                  |
+|                            | `<leader>fi`                              | **Find implementations** (LSP)                                          |
 | **LSP Actions**            | `<leader>gd`                              | **Go to definition**                                                    |
 |                            | `<leader>fr`                              | **Find references** (LSP)                                               |
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
@@ -41,12 +42,10 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 |                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
 |                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
-| **Git/Diff (unified.nvim)** | `<leader>dv`                              | **Toggle** unified diff view                                           |
+| **Git/Diff (diffview.nvim)** | `<leader>dv`                              | **Toggle** diffview                                                    |
+| **Git/Diff (unified.nvim)** | `<leader>uv`                              | **Toggle** unified diff view                                           |
 |                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
 
 - `<leader>` : your leader key (space by default)
-- Use `<leader>dv` to toggle unified diff view, `<leader>uc` to clear diff markings
-
-### thoughts for future config
-could dotnet tool --global install csharpier, but pain. Would rather just stay lightweight. Use rider if you want everything.
+- Use `<leader>dv` to toggle diffview, `<leader>uv` to toggle unified diff view, `<leader>uc` to clear diff markings
