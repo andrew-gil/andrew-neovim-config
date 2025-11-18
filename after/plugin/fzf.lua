@@ -1,5 +1,11 @@
 local fzf = require('fzf-lua')
-fzf.setup()
+fzf.setup({
+  keymap = {
+    fzf = {
+      ["alt-a"]         = "select-all+accept",
+    }
+  }
+})
 
 vim.keymap.set('n', '<leader><leader>', fzf.files)
 vim.keymap.set('n', '<leader>gs', fzf.git_status)
@@ -13,3 +19,5 @@ vim.keymap.set("n", "<leader>db", fzf.diagnostics_document)
 vim.keymap.set("n", "<leader>dw", fzf.diagnostics_workspace)
 vim.keymap.set('n', '<leader>cs', fzf.colorschemes)
 fzf.register_ui_select()
+
+vim.keymap.set('n', '<leader>co', fzf.quickfix)

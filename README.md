@@ -26,6 +26,7 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>bf`                              | **Buffers** picker                                                      |
 |                            | `<leader>cs`                              | **Colorscheme** picker                                                  |
 |                            | `<leader>fi`                              | **Find implementations** (LSP)                                          |
+|                            | `alt-a` (in fzf picker)                   | **Select all** items and accept                                         |
 | **LSP Actions**            | `<leader>gd`                              | **Go to definition**                                                    |
 |                            | `<leader>fr`                              | **Find references** (LSP)                                               |
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
@@ -49,3 +50,9 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 
 - `<leader>` : your leader key (space by default)
 - Use `<leader>dv` to toggle diffview, `<leader>uv` to toggle unified diff view, `<leader>uc` to clear diff markings
+
+### C# Development
+For C# files (`.cs`), the following commands are available:
+- `:make` - Build the project using `dotnet build` (errors only, warnings filtered)
+- `:DotnetTest` - Run tests using `dotnet test` and populate quickfix with failures
+- `:copen` - Open the quickfix window to view build errors or test failures
