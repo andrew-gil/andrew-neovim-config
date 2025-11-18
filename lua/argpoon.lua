@@ -65,3 +65,105 @@ end
 for i = 1,9 do
     vim.keymap.set('n', '<leader>h'..i, wrap(nArg, i))
 end
+
+-- Save and restore argument list (directory-specific)
+local history_file = vim.fn.expand('~/.local/share/nvim/argpoon_history.json')
+
+local function load_history()
+    local file = io.open(history_file, 'r')
+    if not file then
+        return {}
+    end
+
+    local content = file:read('*all')
+    file:close()
+
+    if content == '' then
+        return {}
+    end
+
+    local ok, history = pcall(vim.fn.json_decode, content)
+    if not ok then
+        print('Warning: Could not parse history file, starting fresh')
+        return {}
+    end
+
+    return history
+end
+
+local function save_history(history)
+    -- Ensure directory exists
+    local dir = vim.fn.fnamemodify(history_file, ':h')
+    if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, 'p')
+    end
+
+    local file = io.open(history_file, 'w')
+    if not file then
+        print('Error: Could not open ' .. history_file)
+        return false
+    end
+
+    file:write(vim.fn.json_encode(history))
+    file:close()
+    return true
+end
+
+local function save_args()
+    local cwd = vim.fn.getcwd()
+    local args = {}
+    for i = 0, vim.fn.argc() - 1 do
+        table.insert(args, vim.fn.argv(i))
+    end
+
+    -- Load existing history
+    local history = load_history()
+
+    -- Update entry for current directory
+    history[cwd] = args
+
+    -- Save history
+    if save_history(history) then
+        print('Saved ' .. #args .. ' arguments for ' .. cwd)
+    end
+end
+
+local function restore_args()
+    local cwd = vim.fn.getcwd()
+    local history = load_history()
+
+    local args = history[cwd]
+    if not args or #args == 0 then
+        print('No saved arguments found for ' .. cwd)
+        return
+    end
+
+    -- keep in mind this doesn't clear current args. Please start from blank slate if you want to clear current args
+
+    -- Read and add args
+    local count = 0
+    for _, arg in ipairs(args) do
+        vim.cmd('argadd ' .. vim.fn.fnameescape(arg))
+        count = count + 1
+    end
+
+    print('Restored ' .. count .. ' arguments for ' .. cwd)
+    vim.cmd('redrawstatus')
+end
+
+vim.api.nvim_create_user_command('ArgStash', save_args, {
+    desc = 'Save current argument list to history file'
+})
+
+vim.api.nvim_create_user_command('ArgRestore', restore_args, {
+    desc = 'Restore argument list from history file'
+})
+
+-- Short aliases
+vim.api.nvim_create_user_command('ArgS', save_args, {
+    desc = 'Save current argument list to history file (alias for ArgStash)'
+})
+
+vim.api.nvim_create_user_command('ArgR', restore_args, {
+    desc = 'Restore argument list from history file (alias for ArgRestore)'
+})

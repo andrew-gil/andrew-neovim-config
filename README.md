@@ -51,6 +51,11 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 - `<leader>` : your leader key (space by default)
 - Use `<leader>dv` to toggle diffview, `<leader>uv` to toggle unified diff view, `<leader>uc` to clear diff markings
 
+### Argpoon (Argument List Management)
+Argpoon commands for managing the argument list (directory-specific):
+- `:ArgStash` (or `:ArgS`) - Save current argument list for the current directory to `~/.local/share/nvim/argpoon_history.json`
+- `:ArgRestore` (or `:ArgR`) - Restore argument list for the current directory from saved file (does not clear existing args)
+
 ### C# Development
 For C# files (`.cs`), the following commands are available:
 - `:make` - Build the project using `dotnet build` (errors only, warnings filtered)
