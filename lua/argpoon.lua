@@ -72,20 +72,20 @@ local history_file = vim.fn.expand('~/.local/share/nvim/argpoon_history.json')
 local function load_history()
     local file = io.open(history_file, 'r')
     if not file then
-        return {}
+        return vim.empty_dict()
     end
 
     local content = file:read('*all')
     file:close()
 
     if content == '' then
-        return {}
+        return vim.empty_dict()
     end
 
     local ok, history = pcall(vim.fn.json_decode, content)
     if not ok then
         print('Warning: Could not parse history file, starting fresh')
-        return {}
+        return vim.empty_dict()
     end
 
     return history
@@ -138,16 +138,16 @@ local function restore_args()
         return
     end
 
-    -- keep in mind this doesn't clear current args. Please start from blank slate if you want to clear current args
-
-    -- Read and add args
-    local count = 0
+    -- Build escaped argument list
+    local escaped_args = {}
     for _, arg in ipairs(args) do
-        vim.cmd('argadd ' .. vim.fn.fnameescape(arg))
-        count = count + 1
+        table.insert(escaped_args, vim.fn.fnameescape(arg))
     end
 
-    print('Restored ' .. count .. ' arguments for ' .. cwd)
+    -- Use :args to set all arguments at once (preserves order)
+    vim.cmd('args ' .. table.concat(escaped_args, ' '))
+
+    print('Restored ' .. #args .. ' arguments for ' .. cwd)
     vim.cmd('redrawstatus')
 end
 
