@@ -22,10 +22,6 @@ vim.keymap.set('n', '<leader>gl', fzf.live_grep)
 -- add outgoing_calls and incoming_calls ; generally subsets of find references, but can be helpful
 vim.keymap.set('n', '<leader>fr', fzf.lsp_references,
   { noremap = true, silent = true, desc = 'LSP references' })
-vim.keymap.set('n', '<leader>fo', fzf.lsp_outgoing_calls,
-  { noremap = true, silent = true, desc = 'LSP outgoing' })
-vim.keymap.set('n', '<leader>fi', fzf.lsp_incoming_calls,
-  { noremap = true, silent = true, desc = 'LSP incoming' })
 vim.keymap.set('n', '<leader>gi', fzf.lsp_implementations,
   { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>db", fzf.diagnostics_document)

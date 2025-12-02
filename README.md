@@ -29,8 +29,6 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>8` (visual mode)                 | **Grep visual** selection                                               |
 |                            | `<leader>gl`                              | **Live grep** (search text across files)                                |
 |                            | `<leader>fr`                              | **LSP references**                                                      |
-|                            | `<leader>fo`                              | **LSP outgoing calls**                                                  |
-|                            | `<leader>fi`                              | **LSP incoming calls**                                                  |
 |                            | `<leader>gi`                              | **LSP implementations**                                                 |
 |                            | `<leader>cs`                              | **Colorscheme** picker                                                  |
 |                            | `<leader>co`                              | **Quickfix** picker                                                     |
