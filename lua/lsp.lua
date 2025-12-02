@@ -107,4 +107,27 @@ vim.keymap.set('n', '<leader>of', omnisharpextended.lsp_references,
 vim.keymap.set('n', '<leader>oi', omnisharpextended.lsp_implementation,
   { noremap = true, silent = true, desc = 'omnisharp implementation' })
 
--- todo add picker to fetch all active lsp's in :LspInfo, then run vim.lsp.stop_client(id) on the client id.
+-- Stop LSP client for current buffer
+local function stop_buffer_lsp()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+
+  if #clients == 0 then
+    vim.notify("No LSP clients attached to this buffer", vim.log.levels.INFO)
+    return
+  end
+
+  vim.ui.select(clients, {
+    prompt = "Stop LSP Client:",
+    format_item = function(client)
+      return string.format("[%d] %s", client.id, client.name)
+    end,
+  }, function(client)
+    if client then
+      vim.lsp.stop_client(client.id)
+      vim.notify(string.format("Stopped LSP client: %s. save buffer to see this reflected. :e to reverse.", client.name), vim.log.levels.INFO)
+    end
+  end)
+end
+
+vim.keymap.set('n', '<leader>ls', stop_buffer_lsp,
+  { noremap = true, silent = true, desc = 'Stop LSP for buffer' })

@@ -39,6 +39,7 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
 |                            | `<leader>ca`                              | **Code action** (quick‑fix / import)                                    |
 |                            | `<leader>fm`                              | **Format** current buffer                                               |
+|                            | `<leader>ls`                              | **Stop LSP client** for current buffer                                  |
 | **Window / Pane Navigation** | `<leader>wl` · `<leader>wh` · `<leader>wk` · `<leader>wj` | Move to the pane **right / left / up / down**                           |
 |                            | `:vsp`                                    | Open a **vertical split**                                               |
 |                            | `:vertical resize ±N`                     | **Resize** the current split by *N* columns                             |
