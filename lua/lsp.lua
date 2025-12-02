@@ -77,6 +77,9 @@ vim.lsp.config['omnisharp'] = {
       EnableEditorConfigSupport = true,
     },
     Sdk = { IncludePrereleases = true },
+    RoslynExtensionsOptions = {
+        EnableDecompilationSupport = true
+    }
   },
 }
 
