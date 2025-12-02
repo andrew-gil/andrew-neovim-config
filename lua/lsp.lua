@@ -106,3 +106,5 @@ vim.keymap.set('n', '<leader>of', omnisharpextended.lsp_references,
   { noremap = true, silent = true, desc = 'omnisharp references' })
 vim.keymap.set('n', '<leader>oi', omnisharpextended.lsp_implementation,
   { noremap = true, silent = true, desc = 'omnisharp implementation' })
+
+-- todo add picker to fetch all active lsp's in :LspInfo, then run vim.lsp.stop_client(id) on the client id.

@@ -21,22 +21,29 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |----------------------------|-------------------------------------------|-------------------------------------------------------------------------|
 | **File Explorer**           | `<leader>re`                             | Return to the **file‑tree** view                                        |
 | **fzf.lua**                | `<leader><leader>`                        | **Find files**                                                          |
-|                            | `<leader>gs`                              | **Git status** picker                                                   |
-|                            | `<leader>gr`                              | **Live grep** (search text across files)                                |
 |                            | `<leader>bf`                              | **Buffers** picker                                                      |
+|                            | `<leader>gs`                              | **Git status** picker                                                   |
+|                            | `<leader>gh`                              | **Git diff** picker                                                     |
+|                            | `<leader>gr`                              | **Grep** (search text)                                                  |
+|                            | `<leader>ga`                              | **Grep again** (resume previous grep)                                   |
+|                            | `<leader>8` (visual mode)                 | **Grep visual** selection                                               |
+|                            | `<leader>gl`                              | **Live grep** (search text across files)                                |
+|                            | `<leader>fr`                              | **LSP references**                                                      |
+|                            | `<leader>fo`                              | **LSP outgoing calls**                                                  |
+|                            | `<leader>fi`                              | **LSP incoming calls**                                                  |
+|                            | `<leader>gi`                              | **LSP implementations**                                                 |
 |                            | `<leader>cs`                              | **Colorscheme** picker                                                  |
-|                            | `<leader>fi`                              | **Find implementations** (LSP)                                          |
+|                            | `<leader>co`                              | **Quickfix** picker                                                     |
 |                            | `alt-a` (in fzf picker)                   | **Select all** items and accept                                         |
 | **LSP Actions**            | `<leader>gd`                              | **Go to definition**                                                    |
-|                            | `<leader>fr`                              | **Find references** (LSP)                                               |
 |                            | `<leader>hv`                              | **Hover** documentation                                                 |
 |                            | `<leader>ca`                              | **Code action** (quick‑fix / import)                                    |
 |                            | `<leader>fm`                              | **Format** current buffer                                               |
 | **Window / Pane Navigation** | `<leader>wl` · `<leader>wh` · `<leader>wk` · `<leader>wj` | Move to the pane **right / left / up / down**                           |
 |                            | `:vsp`                                    | Open a **vertical split**                                               |
 |                            | `:vertical resize ±N`                     | **Resize** the current split by *N* columns                             |
-| **Buffer Management**       | `<leader>[[` · `<leader>]]`              | Switch to **previous / next buffer**                                   |
-|                            | `<leader><Tab>`                           | Switch to **alternate buffer** (Ctrl-6)                                |
+| **Quickfix Navigation**     | `<leader>cn`                              | **Next** quickfix item                                                  |
+|                            | `<leader>cp`                              | **Previous** quickfix item                                              |
 | **Diagnostics**            | `<leader>do`                              | **Toggle** diagnostics on/off                                          |
 |                            | `<leader>dd`                              | **Open floating** diagnostic window                                    |
 |                            | `<leader>de`                              | **Toggle** between virtual text and virtual lines                      |
