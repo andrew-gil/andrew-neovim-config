@@ -22,25 +22,32 @@ vim.keymap.set('n', '<leader>hs', function()
     for i = 0,vim.fn.argc()-1 do
 		args[i+1] = vim.fn.argv(i)
     end
+
+    local function index_to_label(i)
+        if i < 10 or i > 35 then
+            return tostring(i)
+        else
+            return string.char(string.byte('a') + i - 10)
+        end
+    end
+
     vim.ui.select(args, {
         prompt = 'Jump To Argpooned Buffer: ',
 		format_item = function(item)
-            if item == cur_bufname then
-                return "[" .. item .. "]"
+            -- Find the index of this item
+            local idx = nil
+            for i, arg in ipairs(args) do
+                if arg == item then
+                    idx = i
+                    break
+                end
             end
-			--for index, value in ipairs(args) do
-			--	if value == item then
-			--		local i = #value
-			--		while i > 0 and string.sub(value, i, i) ~= "/" do
-			--			i = i-1
-			--		end
-			--		if value == cur_bufname then
-			--			return "["..index.."]: " .. string.sub(value, i+1)
-			--		end
-			--		return " " .. index .. " : " .. string.sub(value, i+1)
-			--	end
-			--end
-			return item
+
+            local label = index_to_label(idx)
+            if item == cur_bufname then
+                return label .. ": [" .. item .. "]"
+            end
+			return label .. ": " .. item
 		end
     }, function(_, index)
 		if index ~= nil then
@@ -58,12 +65,16 @@ local function wrap(func, i)
     end
 end
 
-local function nArg(n)
+local function n_arg(n)
     vim.cmd('silent! '..n..'argument')
 end
 
-for i = 1,9 do
-    vim.keymap.set('n', '<leader>h'..i, wrap(nArg, i))
+for i = 1,35 do
+    if i < 10 then
+        vim.keymap.set('n', '<leader>h'..i, wrap(n_arg, i))
+    else
+        vim.keymap.set('n', '<leader>h0'..string.char(string.byte('a') + i - 10), wrap(n_arg, i))
+    end
 end
 
 -- Save and restore argument list (directory-specific)
@@ -167,3 +178,5 @@ vim.api.nvim_create_user_command('ArgS', save_args, {
 vim.api.nvim_create_user_command('ArgR', restore_args, {
     desc = 'Restore argument list from history file (alias for ArgRestore)'
 })
+
+

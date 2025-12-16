@@ -1,3 +1,5 @@
+-- can we deprectate fzf lua? it is a fairly heavy plugin that I don't fully use, and I don't fully like the fuzzy searching workflow
+-- I prefer to use native vim stuff if possible. Let's say I can spin up my own vim.ui.select. then,
 local fzf = require('fzf-lua')
 fzf.setup({
   keymap = {
@@ -7,7 +9,9 @@ fzf.setup({
   }
 })
 
+-- can replace with custom findexpr function use fd, pipe results out to custom vim.ui.select
 vim.keymap.set('n', '<leader><leader>', fzf.files)
+-- can replace with custom findexpr function? look at buffers, use fd, pipe results out to custom vim.ui.select
 vim.keymap.set('n', '<leader>bf', fzf.buffers)
 vim.keymap.set('n', '<leader>gs', fzf.git_status)
 vim.keymap.set('n', '<leader>gh', fzf.git_diff)
@@ -30,4 +34,5 @@ vim.keymap.set("n", "<leader>dw", fzf.diagnostics_workspace)
 -- fzf nice to haves
 vim.keymap.set('n', '<leader>cs', fzf.colorschemes)
 vim.keymap.set('n', '<leader>co', fzf.quickfix)
-fzf.register_ui_select()
+-- todo scuffed for argpoon workflow. Replace with custom solution without the numbers eventually
+fzf.register_ui_select();

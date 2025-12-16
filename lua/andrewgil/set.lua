@@ -10,6 +10,12 @@ vim.opt.termguicolors = true
 vim.opt.ignorecase    = true
 vim.opt.smartcase     = true
 vim.diagnostic.config({ virtual_text = { current_line = true }, virtual_lines = false })
+--function UseFd(fname)
+--  local results = vim.fn.systemlist('fd --type f --hidden --exclude .git ' .. vim.fn.shellescape(fname))
+--  return table.concat(results, '\n')
+--end
+--vim.o.findexpr="v:lua.UseFd(v:fname)"
+
 
 vim.keymap.set('n', '<leader>do', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())

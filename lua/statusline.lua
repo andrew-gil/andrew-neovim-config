@@ -41,11 +41,17 @@ function cmp.harpoon()
     -- if in arg list, return the arg number. Else, return something else
     for i = 0,vim.fn.argc()-1 do
         if (vim.fn.argv(i) == vim.fn.bufname()) then
-            return hi_pattern:format('Special', ' 󰣉 ' .. i + 1 .. ' ')
+            -- need to increment all i's + 1 to match argpon 1 indexing
+            if i < 9 or i > 34 then
+                return hi_pattern:format('Special', ' 󰣉 ' .. i + 1 .. ' ')
+            else
+                return hi_pattern:format('Special', ' 󰣉 ' .. string.char(string.byte('a') + i - 9) .. ' ')
+            end
         end
     end
     return hi_pattern:format('Type', ' 󱡁 ~ ')
 end
+
 
 
 -- do %t for "tail end of file" (eg. file name), but %f if file path matters (eg. duplicate file names because bad repositories lol)
