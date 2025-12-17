@@ -17,6 +17,7 @@ Plug('ibhagwan/fzf-lua')
 -- nice to haves
 Plug('axkirillov/unified.nvim')
 Plug('sindrets/diffview.nvim')
+-- currently flagging because it is using tbl_flatten, which will be deprecated in nvim 13
 Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
 Plug('fabijanzulj/blame.nvim')
 -- color schemes
