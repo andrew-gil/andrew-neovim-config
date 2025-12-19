@@ -1,4 +1,5 @@
 --homemade harpoon, requires statusline.lua for full functionality
+--do a recursive delete, <leader>hr<number> where if you are an argpooned buffer
 
 vim.keymap.set('n', '<leader>hh', function()
     vim.cmd(vim.fn.argc().."argadd %")
@@ -31,29 +32,39 @@ vim.keymap.set('n', '<leader>hs', function()
         end
     end
 
-    vim.ui.select(args, {
-        prompt = 'Jump To Argpooned Buffer: ',
-		format_item = function(item)
-            -- Find the index of this item
-            local idx = nil
-            for i, arg in ipairs(args) do
-                if arg == item then
-                    idx = i
-                    break
+    if #args > 0 then
+        vim.ui.select(args, {
+            prompt = 'Select Argpooned Buffer',
+            format_item = function(item)
+                if item == cur_bufname then
+                    return "[" .. item .. "]"
                 end
+                return item
+            end,
+            label_item = function(item)
+                -- Find the index of this item
+                local idx = nil
+                for i, arg in ipairs(args) do
+                    if arg == item then
+                        idx = i
+                        break
+                    end
+                end
+                if idx == nil then
+                    -- arbitrary key to indicate that something went wrong
+                    return '?'
+                end
+                return index_to_label(idx)
+            end,
+            win_predefined='center'
+        }, function(_, index)
+            if index ~= nil then
+                vim.cmd('silent! '..(index)..'argument')
             end
-
-            local label = index_to_label(idx)
-            if item == cur_bufname then
-                return label .. ": [" .. item .. "]"
-            end
-			return label .. ": " .. item
-		end
-    }, function(_, index)
-		if index ~= nil then
-			vim.cmd('silent! '..(index)..'argument')
-		end
-    end)
+        end)
+    else
+        print('Warning: no arguments to display')
+    end
 end)
 
 -- todo write a function that allows me to switch the position of an argument. For example, 7 goes to 2, 2 goes to 3, everything moves up

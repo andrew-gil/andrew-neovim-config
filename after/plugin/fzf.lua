@@ -35,4 +35,4 @@ vim.keymap.set("n", "<leader>dw", fzf.diagnostics_workspace)
 vim.keymap.set('n', '<leader>cs', fzf.colorschemes)
 vim.keymap.set('n', '<leader>co', fzf.quickfix)
 -- todo scuffed for argpoon workflow. Replace with custom solution without the numbers eventually
-fzf.register_ui_select();
+--fzf.register_ui_select();
