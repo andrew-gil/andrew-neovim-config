@@ -53,12 +53,20 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 | **Git/Diff (unified.nvim)** | `<leader>uv`                              | **Toggle** unified diff view                                           |
 |                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
+| **Argpoon**               | `<leader>hh`                              | **Add** current buffer to argument list and navigate to it             |
+|                            | `<leader>hd`                              | **Delete** current buffer from argument list                           |
+|                            | `<leader>hs`                              | Show **argpoon menu** (select from argument list)                      |
+|                            | `<leader>h1-9`                            | **Navigate** to argument 1-9                                           |
+|                            | `<C-h>1-9`                                | **Move** current buffer to position 1-9                                |
+|                            | `<C-h>a-z`                                | **Move** current buffer to position 10-35 (a=10, b=11, ..., z=35)      |
 
 - `<leader>` : your leader key (space by default)
 - Use `<leader>dv` to toggle diffview, `<leader>uv` to toggle unified diff view, `<leader>uc` to clear diff markings
 
 ### Argpoon (Argument List Management)
-Argpoon commands for managing the argument list (directory-specific):
+See keybinds table above for all argpoon navigation and repositioning shortcuts.
+
+Commands for managing the argument list (directory-specific):
 - `:ArgStash` (or `:ArgS`) - Save current argument list for the current directory to `~/.local/share/nvim/argpoon_history.json`
 - `:ArgRestore` (or `:ArgR`) - Restore argument list for the current directory from saved file (does not clear existing args)
 

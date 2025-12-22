@@ -1,5 +1,12 @@
 --homemade harpoon, requires statusline.lua for full functionality
---do a recursive delete, <leader>hr<number> where if you are an argpooned buffer
+
+local function get_args()
+	local args = {}
+    for i = 0,vim.fn.argc()-1 do
+		args[i+1] = vim.fn.argv(i)
+    end
+    return args
+end
 
 vim.keymap.set('n', '<leader>hh', function()
     vim.cmd(vim.fn.argc().."argadd %")
@@ -13,16 +20,10 @@ vim.keymap.set('n', '<leader>hd', function()
     vim.cmd("redrawstatus")
 end)
 
-vim.keymap.set('n', '<leader>hl', function()
-    vim.cmd.args()
-end)
-
 vim.keymap.set('n', '<leader>hs', function()
+    -- argpoon menu. Shows buffers, gives keybinds to get to buffers.
 	local cur_bufname = vim.fn.bufname()
-	local args = {}
-    for i = 0,vim.fn.argc()-1 do
-		args[i+1] = vim.fn.argv(i)
-    end
+    local args = get_args()
 
     local function index_to_label(i)
         if i < 10 or i > 35 then
@@ -67,9 +68,8 @@ vim.keymap.set('n', '<leader>hs', function()
     end
 end)
 
--- todo write a function that allows me to switch the position of an argument. For example, 7 goes to 2, 2 goes to 3, everything moves up
 
--- works via closure
+-- works via closure, design pattern to be able to assign keymaps in a loop
 local function wrap(func, i)
     return function()
         func(i)
@@ -80,11 +80,49 @@ local function n_arg(n)
     vim.cmd('silent! '..n..'argument')
 end
 
+local function move_to_arg(n)
+	local cur_bufname = vim.fn.bufname()
+    local args = get_args()
+    local curBufArgIdx = nil
+
+    if n < 1 or n > vim.fn.argc() then
+        print('ERROR: target position must be between 1 and ' .. vim.fn.argc())
+        return
+    end
+
+    for idx, item in ipairs(args) do
+        if item == cur_bufname then
+            curBufArgIdx = idx
+            break
+        end
+    end
+
+    if curBufArgIdx == nil then
+        print('ERROR current buffer is not an argument')
+        return
+    end
+
+    if curBufArgIdx == n then
+        print('WARNING target argument index is the same as current buffer index. Will execute no operation')
+        return
+    end
+
+    vim.cmd('argdelete ' .. vim.fn.fnameescape(cur_bufname))
+
+    -- argadd with count N adds after position N, so for position n we use n-1
+    local insert_pos = n - 1
+    vim.cmd(insert_pos .. 'argadd ' .. vim.fn.fnameescape(cur_bufname))
+
+    vim.cmd("redrawstatus")
+end
+
 for i = 1,35 do
     if i < 10 then
         vim.keymap.set('n', '<leader>h'..i, wrap(n_arg, i))
+        vim.keymap.set('n', '<C-h>'..i, wrap(move_to_arg, i))
     else
-        vim.keymap.set('n', '<leader>h0'..string.char(string.byte('a') + i - 10), wrap(n_arg, i))
+        vim.keymap.set('n', '<C-h>'..string.char(string.byte('a') + i - 10), wrap(move_to_arg, i))
+        -- not setting keybinds for the letters. If we want to nav to a letter, use argpoon menu
     end
 end
 

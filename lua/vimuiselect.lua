@@ -130,7 +130,6 @@ M.ui_select = function(items, opts, on_choice)
     used_labels = {}
     for idx,item in ipairs(items) do
         local label = label_item(item)
-        print(label)
         if #label > 1 then
             print('WARNING: keybinds wll not work if label is longer than one character')
         elseif label == 'j' or label == 'k' or label == '<Esc>' or label == 'q' or label == '<CR>' then
