@@ -1,6 +1,7 @@
 local vim = vim
 vim.wo.relativenumber = true
-vim.opt.clipboard     = "unnamedplus"
+vim.keymap.set({'n', 'v'}, '<leader>y', '"+y')
+vim.keymap.set({'n', 'v'}, '<leader>p', '"+p')
 vim.opt.tabstop       = 4  -- literal <Tab> == 4 spaces when files are read
 vim.opt.shiftwidth    = 4  -- >> << == 4 spaces
 vim.opt.softtabstop   = 4  -- <Tab> while typing feels like 4 spaces
