@@ -47,6 +47,38 @@ end, {
 })
 vim.cmd([[cabbrev gs GitStatus]])
 
+-- Custom Find command with vim.ui.select for multiple results --
+vim.api.nvim_create_user_command('Find', function(opts)
+    local pattern = opts.args
+
+    -- Get results from fd
+    local results = vim.fn.systemlist('fd --type f --hidden --exclude .git --exclude node_modules ' .. vim.fn.shellescape(pattern))
+
+    if #results == 0 then
+        print('No files found matching: ' .. pattern)
+    elseif #results == 1 then
+        -- Single result: open directly
+        vim.cmd('edit ' .. vim.fn.fnameescape(results[1]))
+    else
+        -- Multiple results: use vim.ui.select
+        vim.ui.select(results, {
+            prompt = 'Select file (' .. #results .. ' matches):',
+            format_item = function(item)
+                return item
+            end,
+        }, function(choice)
+            if choice then
+                vim.cmd('edit ' .. vim.fn.fnameescape(choice))
+            end
+        end)
+    end
+end, {
+    nargs = 1,
+    complete = function(arg_lead)
+        return vim.fn.systemlist('fd --type f --hidden --exclude .git --exclude node_modules ' .. vim.fn.shellescape(arg_lead))
+    end
+})
+
 -- grep --
 vim.opt.grepprg = 'rg --vimgrep --smart-case --hidden'
 vim.cmd([[cabbrev rg grep]])
