@@ -1,4 +1,3 @@
-local vim = vim
 local diffviewActions = require('diffview.actions')
 require('diffview').setup({
   use_icons = false,

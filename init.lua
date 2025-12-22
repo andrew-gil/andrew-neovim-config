@@ -1,5 +1,4 @@
 require('andrewgil')
-local vim = vim
 local Plug = vim.fn['plug#']
 
 vim.call('plug#begin')
@@ -13,6 +12,7 @@ Plug('hrsh7th/cmp-vsnip')
 Plug('https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git')
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 -- searching
+--Plug('junegunn/fzf')
 Plug('ibhagwan/fzf-lua')
 -- nice to haves
 Plug('axkirillov/unified.nvim')
