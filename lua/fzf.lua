@@ -1,8 +1,43 @@
--- can we deprectate fzf lua? it is a fairly heavy plugin that I don't fully use, and I don't fully like the fuzzy searching workflow
--- I prefer to use native vim stuff if possible. Let's say I can spin up my own vim.ui.select. then,
 local M = {}
-M.setup_fzf = function()
+
+--the vision
+--set up fzf in a floating term like :FZF for things like file searching, buffer searching
+--side by side that with a floating buffer with a custom parser that finds all interfaces.
+--set up a git status situation like fzf-lua git status but use that idea of displaying patches in quickfix
+--set up grep to be quickfixed, with the grep current highlighted, grep again, and fzf grep (optional)
+--set up fzf colorschemes
+--preview-window up,1,border-horizontal
+M.files = function()
+    vim.cmd([[call fzf#run(fzf#wrap({
+        \ 'source': 'fd --type f --hidden --exclude .git --exclude node_modules',
+        \ 'sink': 'e',
+        \ 'options': ['--exact', '--preview', 'bat -f --style=changes {}', '--preview-window', 'up'],
+        \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
+        \ }))]])
 end
+
+M.git_status = function()
+    vim.cmd([[call fzf#run(fzf#wrap({
+        \ 'source': 'git ls-files -m',
+        \ 'sink': 'e',
+        \ 'options': ['--exact', '--preview', 'bat -d -f --style=numbers {}'],
+        \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
+        \ }))]])
+end
+
+M.colorschemes = function()
+    vim.cmd([[call fzf#run(fzf#wrap({
+        \ 'source': map(split(globpath(&rtp, 'colors/*.vim') . "\n" . globpath(&rtp, 'colors/*.lua')), 'fnamemodify(v:val, '':t:r'')'),
+        \ 'sink': 'colorscheme'
+        \ }))]])
+end
+
+M.setup_fzf = function()
+    vim.keymap.set('n', '<leader><leader>', M.files)
+    vim.keymap.set('n', '<leader>gs', M.git_status)
+    vim.keymap.set('n', '<leader>cs', M.colorschemes)
+end
+
 M.setup_fzf_lua = function()
     local fzf = require('fzf-lua')
     fzf.setup({
@@ -19,7 +54,6 @@ M.setup_fzf_lua = function()
     -- can replace with custom findexpr function? look at buffers, use fd, pipe results out to custom vim.ui.select
     vim.keymap.set('n', '<leader>bf', fzf.buffers)
     vim.keymap.set('n', '<leader>gs', fzf.git_status)
-    vim.keymap.set('n', '<leader>gh', fzf.git_diff)
 
     -- fzf grep stuff.
     vim.keymap.set('n', '<leader>gr', fzf.grep)

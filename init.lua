@@ -12,10 +12,8 @@ Plug('hrsh7th/cmp-vsnip')
 Plug('https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git')
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 -- searching
-Plug('junegunn/fzf')
 Plug('ibhagwan/fzf-lua')
 -- nice to haves
-Plug('sindrets/diffview.nvim')
 -- currently flagging because it is using tbl_flatten, which will be deprecated in nvim 13
 Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
 Plug('fabijanzulj/blame.nvim')
@@ -36,7 +34,8 @@ require('searching')
 require('lsp')
 require('make')
 require('blametoggle')
-require('fzf').setup_fzf_lua()
+require('fzf').setup_fzf()
+
 require('colorizer').setup()
 require('vimuiselect').setup()
 require('vim._extui').enable({})
