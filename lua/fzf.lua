@@ -7,20 +7,31 @@ local M = {}
 --set up grep to be quickfixed, with the grep current highlighted, grep again, and fzf grep (optional)
 --set up fzf colorschemes
 --preview-window up,1,border-horizontal
+
+--todo pass in custom function to --preview rather than bat, that uses treesitter to properly find the best code to preview
+--currently writing standalone command line util to do this. In progress. Can indefinitely use basic bat preview.
 M.files = function()
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': 'fd --type f --hidden --exclude .git --exclude node_modules',
         \ 'sink': 'e',
-        \ 'options': ['--exact', '--preview', 'bat -f --style=changes {}', '--preview-window', 'up'],
+        \ 'options': ['--exact', '--style', 'minimal',
+        \            '--border-label', 'File Search',
+        \            '--preview', 'bat -f --style=numbers {}'],
         \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
         \ }))]])
 end
 
-M.git_status = function()
+-- this doesn't do what fzf-lua git status used to do. I want this to do just one thing, which is give me a filtered list to go to files I am currently writing to.
+-- when something is staged, it shows only staged changes. If it also has unstaged changes, it will not show.
+-- this is only for searching. If I want a staging manager like what fzf-lua used to do, use a prebuilt tool like lazygit or fugitive
+M.git_modified = function()
+    local isStaged = "git diff --cached --name-only | rg -Fxq {}"
     vim.cmd([[call fzf#run(fzf#wrap({
-        \ 'source': 'git ls-files -m',
+        \ 'source': '(git ls-files -m; git diff --cached --name-only) | sort -u',
         \ 'sink': 'e',
-        \ 'options': ['--exact', '--preview', 'bat -d -f --style=numbers {}'],
+        \ 'options': ['--exact', '--style', 'minimal', 
+        \            '--border-label', 'Git Modified',
+        \            '--preview', '(git diff --cached --name-only | rg -Fxq {} && git diff --cached {} || git diff {}) | bat -f --style=plain --language diff'],
         \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
         \ }))]])
 end
@@ -34,7 +45,7 @@ end
 
 M.setup_fzf = function()
     vim.keymap.set('n', '<leader><leader>', M.files)
-    vim.keymap.set('n', '<leader>gs', M.git_status)
+    vim.keymap.set('n', '<leader>gs', M.git_modified)
     vim.keymap.set('n', '<leader>cs', M.colorschemes)
 end
 
