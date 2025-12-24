@@ -207,6 +207,9 @@ local function restore_args()
     -- Use :args to set all arguments at once (preserves order)
     vim.cmd('args ' .. table.concat(escaped_args, ' '))
 
+    -- Navigate to last argument to mark arglist as processed and prevent warnings on exit
+    vim.cmd('silent! last')
+
     print('Restored ' .. #args .. ' arguments for ' .. cwd)
     vim.cmd('redrawstatus')
 end
