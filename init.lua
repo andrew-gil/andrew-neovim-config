@@ -34,7 +34,7 @@ require('searching')
 require('lsp')
 require('make')
 require('blametoggle')
-require('fzf').setup_fzf()
+require('fzf').setup_fzf_lua()
 
 require('colorizer').setup()
 require('vimuiselect').setup()

@@ -85,6 +85,29 @@ vim.lsp.config['omnisharp'] = {
 
 vim.lsp.enable({'omnisharp'})
 
+vim.lsp.config['rust_analyzer'] = {
+  capabilities = caps,
+  settings = {
+      ["rust-analyzer"] = {
+          imports = {
+              granularity = {
+                  group = "module",
+              },
+              prefix = "self",
+          },
+          cargo = {
+              buildScripts = {
+                  enable = true,
+              },
+          },
+          procMacro = {
+              enable = true
+          },
+      }
+  }
+}
+vim.lsp.enable({'rust_analyzer'})
+
 vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition,
   { noremap = true, silent = true, desc = 'LSP definition' })
 vim.keymap.set('n', '<leader>hv', vim.lsp.buf.hover,

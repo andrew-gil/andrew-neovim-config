@@ -7,6 +7,7 @@ local M = {}
 --set up grep to be quickfixed, with the grep current highlighted, grep again, and fzf grep (optional)
 --set up fzf colorschemes
 --preview-window up,1,border-horizontal
+--set up ls such that I don't have to use netrw to nav files
 
 --todo pass in custom function to --preview rather than bat, that uses treesitter to properly find the best code to preview
 --currently writing standalone command line util to do this. In progress. Can indefinitely use basic bat preview.
@@ -25,7 +26,6 @@ end
 -- when something is staged, it shows only staged changes. If it also has unstaged changes, it will not show.
 -- this is only for searching. If I want a staging manager like what fzf-lua used to do, use a prebuilt tool like lazygit or fugitive
 M.git_modified = function()
-    local isStaged = "git diff --cached --name-only | rg -Fxq {}"
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': '(git ls-files -m; git diff --cached --name-only) | sort -u',
         \ 'sink': 'e',
@@ -36,9 +36,33 @@ M.git_modified = function()
         \ }))]])
 end
 
+M.buffers = function()
+    local buffers = vim.api.nvim_list_bufs()
+    print(buffers)
+    vim.cmd([[call fzf#run(fzf#wrap({
+        \ 'source': map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'),
+        \ 'sink': 'e',
+        \ 'options': ['--exact', '--style', 'minimal', 
+        \            '--border-label', 'Buffers',
+        \            '--preview', 'bat -f --style=numbers {}'],
+        \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
+        \ }))]])
+end
+
+M.buffer_gitfiles = function()
+    vim.cmd([[call fzf#run(fzf#wrap({
+        \ 'source': '',
+        \ 'sink': 'e',
+        \ 'options': ['--exact', '--style', 'minimal', 
+        \            '--border-label', 'Buffers Git files',
+        \            '--preview', 'bat -f --style=numbers {}'],
+        \ 'window': { 'width': 0.6, 'height': 0.9, 'border': 'rounded' }
+        \ }))]])
+end
+
 M.colorschemes = function()
     vim.cmd([[call fzf#run(fzf#wrap({
-        \ 'source': map(split(globpath(&rtp, 'colors/*.vim') . "\n" . globpath(&rtp, 'colors/*.lua')), 'fnamemodify(v:val, '':t:r'')'),
+        \ 'source': map(split(globpath(&rtp, 'colors/*.vim') . '\n' . globpath(&rtp, 'colors/*.lua')), 'fnamemodify(v:val, '':t:r'')'),
         \ 'sink': 'colorscheme'
         \ }))]])
 end
@@ -46,6 +70,7 @@ end
 M.setup_fzf = function()
     vim.keymap.set('n', '<leader><leader>', M.files)
     vim.keymap.set('n', '<leader>gs', M.git_modified)
+    vim.keymap.set('n', '<leader>bf', M.buffers)
     vim.keymap.set('n', '<leader>cs', M.colorschemes)
 end
 
