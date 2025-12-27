@@ -49,8 +49,8 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 |                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
 |                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
-| **Git/Diff (diffview.nvim)** | `<leader>dv`                              | **Toggle** diffview                                                    |
-| **Git/Diff (unified.nvim)** | `<leader>uv`                              | **Toggle** unified diff view                                           |
+| **Git/Diff**               | `<leader>dv`                              | **Open** diff'd files pane                                                    |
+| **Git/Diff**               | `<leader>dm`                              | **Open** diff'd files menu                                                    |
 |                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
 | **Argpoon**               | `<leader>hh`                              | **Add** current buffer to argument list and navigate to it             |

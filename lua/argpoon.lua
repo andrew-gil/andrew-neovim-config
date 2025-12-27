@@ -42,20 +42,22 @@ vim.keymap.set('n', '<leader>hs', function()
                 end
                 return item
             end,
-            label_item = function(item)
+            label_item = function()
                 -- Find the index of this item
-                local idx = nil
-                for i, arg in ipairs(args) do
-                    if arg == item then
-                        idx = i
-                        break
+                return function(item)
+                    local idx = nil
+                    for i, arg in ipairs(args) do
+                        if arg == item then
+                            idx = i
+                            break
+                        end
                     end
+                    if idx == nil then
+                        -- arbitrary key to indicate that something went wrong
+                        return '?'
+                    end
+                    return index_to_label(idx)
                 end
-                if idx == nil then
-                    -- arbitrary key to indicate that something went wrong
-                    return '?'
-                end
-                return index_to_label(idx)
             end,
             win_predefined='center'
         }, function(_, index)
