@@ -15,7 +15,6 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 Plug('ibhagwan/fzf-lua')
 -- nice to haves
 -- currently flagging because it is using tbl_flatten, which will be deprecated in nvim 13
-Plug('norcalli/nvim-colorizer.lua') -- for viewing hex colors while editing
 Plug('fabijanzulj/blame.nvim')
 -- color schemes
 Plug('morhetz/gruvbox')
@@ -37,6 +36,5 @@ require('blametoggle')
 require('fzf').setup_fzf_lua()
 require('diff').setup()
 
-require('colorizer').setup()
 require('vimuiselect').setup()
 --require('vim._extui').enable({})
