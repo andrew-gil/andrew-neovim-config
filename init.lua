@@ -14,7 +14,6 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 -- searching
 Plug('ibhagwan/fzf-lua')
 -- nice to haves
--- currently flagging because it is using tbl_flatten, which will be deprecated in nvim 13
 Plug('fabijanzulj/blame.nvim')
 -- color schemes
 Plug('morhetz/gruvbox')
@@ -35,6 +34,4 @@ require('make')
 require('blametoggle')
 require('fzf').setup_fzf_lua()
 require('diff').setup()
-
 require('vimuiselect').setup()
---require('vim._extui').enable({})

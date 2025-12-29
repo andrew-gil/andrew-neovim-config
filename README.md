@@ -51,11 +51,12 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 |                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
 |                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
-| **Git/Diff**               | `<leader>dl`                              | **Open** diff'd files pane                                                    |
-| **Git/Diff**               | `<leader>dm`                              | **Open** diff'd files menu                                                    |
+| **Git/Diff**               | `<leader>dl`                              | **Open** diff'd files pane                                             |
+|                            | `<leader>dm`                              | **Open** diff'd files menu                                             |
+|                            | `,,`                                      | **jump to** vim ui select                                              |
 |                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
-| **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
-| **Argpoon**               | `<leader>hh`                              | **Add** current buffer to argument list and navigate to it             |
+| **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                     |
+| **Argpoon**               | `<leader>hh`                              | **Add** current buffer to argument list and navigate to it              |
 |                            | `<leader>hd`                              | **Delete** current buffer from argument list                           |
 |                            | `<leader>hs`                              | Show **argpoon menu** (select from argument list)                      |
 |                            | `<leader>h1-9`                            | **Navigate** to argument 1-9                                           |

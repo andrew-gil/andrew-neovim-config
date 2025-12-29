@@ -170,9 +170,37 @@ M.ui_select = function(items, opts, on_choice)
     vim.keymap.set('n', 'k', 'k', opts_map)
 end
 
+M.get_ui_select_winid = function()
+    local ns_id = vim.api.nvim_create_namespace('ui_select_labels')
+    local buffers = vim.api.nvim_list_bufs()
+
+    for _, buf in ipairs(buffers) do
+        if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) then
+            -- Check if this buffer has our ui_select highlights
+            local marks = vim.api.nvim_buf_get_extmarks(buf, ns_id, 0, -1, {})
+            if #marks > 0 then
+                -- Get the window ID for this buffer
+                local win_id = vim.fn.bufwinid(buf)
+                if win_id ~= -1 then
+                    return win_id
+                end
+            end
+        end
+    end
+    return nil
+end
+
 -- Setup function to override vim.ui.select
 function M.setup()
     vim.ui.select = M.ui_select
+    vim.keymap.set('n', ',,', function()
+        local win_id = M.get_ui_select_winid()
+        if win_id then
+            vim.api.nvim_set_current_win(win_id)
+        else
+            print('WARNING: no vim-uiselect window available to jump to')
+        end
+    end)
 end
 
 return M

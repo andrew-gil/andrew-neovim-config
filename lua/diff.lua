@@ -1,15 +1,6 @@
 -- due to some manual parsing shenanigans (is_diffable_filepath), this will only work on posix filesystems (not windows)
 -- note that due to hard coded context ceiling (found no viable alternative), files above 3000 lines might not show all lines
--- heavily depends on git-delta, specifically the line number output. That contract changes, this code breaks. Consider alternative fallbacks with no syntax highlighing
-
--- TODO
--- DONE figure out bug with diff menu. If I open a diff using dmenu, then use leader+w+hjkl to nav to it, then close it, then close dmenu after, nvim bugs out
--- DONE figure out how to make splits not disappear when toggling in between diffs. If I open a dmenu in a split, then open a diff, then close it all, I should not see the split go away, I should just go back to the original code
--- DONE figure out how to make diff show all code, not in the shape of hunks
--- refactor code to make it more readable. Figure out if the current method of passing in a label_item function is the best way; currently, it only works because of closure.
--- DONE opening the diff should open it to the same cursor location as where my cursor was before opening the diff view.
--- i want to use diff menu sometimes to just jump to files I am touching, not always to look at the diff. do a different keybind to look at the diff
-
+-- heavily depends on git-delta, specifically the line number output. That contract changes, this code breaks. Can do alternative solutions but would miss syntax highlighting. Would need to modify parsing to account for different text.
 
 local M = {}
 
@@ -73,8 +64,11 @@ M.create_diff_menu_pane = function()
             return
         end
         vim.cmd('e ' .. filepath)
-        M.run_diff_bat(filepath)
+        local cur_win = vim.api.nvim_get_current_win()
         M.create_diff_menu_pane()
+        --shift focus back to window
+        vim.api.nvim_set_current_win(cur_win)
+        M.run_diff_bat(filepath)
     end)
 end
 
