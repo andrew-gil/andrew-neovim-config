@@ -1,11 +1,5 @@
 local M = {}
 
--- TODO
--- figure out bug with diff menu. If I open a diff using dmenu, then use leader+w+hjkl to nav to it, then close it, then close dmenu after, nvim bugs out
--- figure out how to make splits not disappear when toggling in between diffs. If I open a dmenu in a split, then open a diff, then close it all, I should not see the split go away, I should just go back to the original code
--- figure out how to make diff show all code, not in the shape of hunks
--- refactor code to make it more readable. Figure out if the current method of passing in a label_item function is the best way; currently, it only works because of closure.
-
 -- Factory function that creates a label_item function with its own used_labels state
 -- Returns a function that extracts a unique single-character label from each item
 M.label_item_default = function(format_item)

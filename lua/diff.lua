@@ -1,4 +1,26 @@
+-- due to some manual parsing shenanigans (is_diffable_filepath), this will only work on posix filesystems (not windows)
+-- note that due to hard coded context ceiling (found no viable alternative), files above 3000 lines might not show all lines
+-- heavily depends on git-delta, specifically the line number output. That contract changes, this code breaks. Consider alternative fallbacks with no syntax highlighing
+
+-- TODO
+-- DONE figure out bug with diff menu. If I open a diff using dmenu, then use leader+w+hjkl to nav to it, then close it, then close dmenu after, nvim bugs out
+-- DONE figure out how to make splits not disappear when toggling in between diffs. If I open a dmenu in a split, then open a diff, then close it all, I should not see the split go away, I should just go back to the original code
+-- DONE figure out how to make diff show all code, not in the shape of hunks
+-- refactor code to make it more readable. Figure out if the current method of passing in a label_item function is the best way; currently, it only works because of closure.
+-- DONE opening the diff should open it to the same cursor location as where my cursor was before opening the diff view.
+-- i want to use diff menu sometimes to just jump to files I am touching, not always to look at the diff. do a different keybind to look at the diff
+
+
 local M = {}
+
+local is_diffable_filepath = function(path)
+    -- because lua does not have regex, we may struggle with this bit
+    -- simplest for now will be to check that end of string is not a slash, and that string contains at least one character
+    if path == nil or string.sub(path, -1) == "/" or path == '' then
+        return false
+    end
+    return true
+end
 
 -- custom labeling function, uses the first letter of the filename, while allowing the filepath to remain the item
 M.label_filepath_item = function()
@@ -40,7 +62,7 @@ M.get_diffed_files = function()
     return files
 end
 
-M.create_diff_pane = function()
+M.create_diff_menu_pane = function()
     local mods = M.get_diffed_files()
     vim.ui.select(mods, {
         prompt = 'Modified Files',
@@ -52,52 +74,101 @@ M.create_diff_pane = function()
         end
         vim.cmd('e ' .. filepath)
         M.run_diff_bat(filepath)
-        M.create_diff_pane()
+        M.create_diff_menu_pane()
     end)
 end
 
 M.run_diff_bat = function(filepath)
-    -- Create a new fullscreen terminal buffer (like fzf#run)
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = buf })
-
-    -- Switch to the new buffer (fullscreen)
-    vim.api.nvim_set_current_buf(buf)
-
+    -- todo validate filepath is a path not directory
+    local is_diffable = is_diffable_filepath(filepath)
+    if is_diffable == false then
+        print('WARNING: cannot run diff on a directory')
+        return
+    end
     -- Check if file is tracked to determine which git diff command to use
     local is_tracked = vim.fn.system({'git', 'ls-files', '--', filepath})
     local cmd
 
     if is_tracked == '' or is_tracked == '\n' then
         -- Untracked file
-        cmd = 'git diff --no-index /dev/null ' .. vim.fn.shellescape(filepath) .. ' | bat -f --style=plain'
+        cmd = 'git diff -U3000 --no-index /dev/null ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
     else
         -- Tracked file
-        cmd = 'git diff -- ' .. vim.fn.shellescape(filepath) .. ' | bat -f --style=plain'
+        local modified_files = vim.fn.system({'git', 'diff', 'HEAD', '--name-only', '--no-index', '--', vim.fn.shellescape(filepath)})
+        if modified_files ~= nil and modified_files ~= '' then
+            cmd = 'git diff -U3000 HEAD -- ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
+        end
     end
 
-    -- Start terminal
-    vim.fn.termopen(cmd)
+    if cmd == nil then
+        print('WARNING: file is not modified. No diff to display')
+        return
+    end
 
-    -- Switch to normal mode after terminal loads
-    vim.cmd('startinsert')
-    vim.defer_fn(function()
-        vim.cmd('stopinsert')
-    end, 50)
+    vim.cmd('normal! zz')
+    local cur_buf = vim.api.nvim_get_current_buf()
+    local cur_cursor_pos = vim.api.nvim_win_get_cursor(0) -- output {row, column}, 1-indexed
+    local cur_line = vim.api.nvim_get_current_line()
 
-    -- Set up keybindings to close with Esc or leader key
-    local opts_map = { buffer = buf, noremap = true, silent = true }
+    local term_buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = term_buf })
+    vim.api.nvim_set_current_buf(term_buf)
+
+    -- another closure functionality. stores last valid currentdiff line we were on while perusing the term_buf so we can jump to it when we go back.
+    local last_valid_currentdiff_cursor_pos
+    vim.fn.jobstart(cmd, {
+        term = true,
+        on_exit = function()
+            vim.schedule(function()
+                local diff_buf_lines = vim.api.nvim_buf_get_lines(term_buf, 0, -1, false)
+                for key,value in ipairs(diff_buf_lines) do
+                    -- on an empty line, we look for the line number instead. Line numbers show up in git delta, will be pattern matched.
+                    if string.match(value, '⋮%s+' .. cur_cursor_pos[1]) ~= nil then
+                        if cur_line == '' or cur_line == nil then
+                            vim.api.nvim_win_set_cursor(0, { key , #value})
+                            last_valid_currentdiff_cursor_pos = { key, #value }
+                        else
+                            vim.api.nvim_win_set_cursor(0, { key , cur_cursor_pos[2] + (#value - #cur_line) })
+                            last_valid_currentdiff_cursor_pos = { key, cur_cursor_pos[2] + (#value - #cur_line) }
+                        end
+                        vim.cmd('normal! zz')
+                        break
+                    end
+                end
+                vim.api.nvim_create_autocmd('CursorMoved', { buffer = term_buf, callback = function()
+                    local term_buf_cur_line = vim.api.nvim_get_current_line()
+                    local term_buf_cur_cursor_pos = vim.api.nvim_win_get_cursor(0)
+                    local matching_line_number = string.match(term_buf_cur_line, '⋮%s+(%d+)')
+                    local git_delta_linenumber_artifacts = string.match(term_buf_cur_line, '(.*│)')
+                    if matching_line_number ~= nil then
+                        last_valid_currentdiff_cursor_pos = { tonumber(matching_line_number), math.max(term_buf_cur_cursor_pos[2] - string.len(git_delta_linenumber_artifacts), 0) }
+                    end
+                end})
+            end)
+        end
+    })
+
+    local return_to_cur_buffer = function()
+        vim.api.nvim_set_current_buf(cur_buf)
+        vim.api.nvim_win_set_cursor(0, {last_valid_currentdiff_cursor_pos[1], last_valid_currentdiff_cursor_pos[2]})
+        vim.cmd('normal! zz')
+    end
+
     vim.keymap.set('n', '<Esc>', function()
-        vim.api.nvim_buf_delete(buf, { force = true })
-    end, opts_map)
-    vim.keymap.set('n', '<leader>dv', function()
-        vim.api.nvim_buf_delete(buf, { force = true })
-    end, opts_map)
+        return_to_cur_buffer()
+    end, { buffer = term_buf, noremap = true, silent = true })
+    vim.keymap.set('n', 'q', function()
+        return_to_cur_buffer()
+    end, { buffer = term_buf, noremap = true, silent = true })
+    vim.keymap.set('n', '<leader>dl', function()
+        return_to_cur_buffer()
+    end, { buffer = term_buf, noremap = true, silent = true })
 end
 
 M.setup = function()
-    vim.keymap.set('n', '<leader>dm', M.create_diff_pane)
-    vim.keymap.set('n', '<leader>dv', function()
+    vim.keymap.set('n', '<leader>dm', M.create_diff_menu_pane)
+    -- these come in as relative paths.
+    vim.keymap.set('n', '<leader>dl', function()
         M.run_diff_bat(vim.fn.expand('%:p'))
     end)
 end

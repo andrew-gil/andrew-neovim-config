@@ -3,6 +3,8 @@ brew install fzf ripgrep
 brew install lua-language-server (optional, only if need lua)
 npm install --global typescript-language-server prettier some-sass-language-server @angular/language-server
 
+git-delta, if using 'diff'.
+
 ## Set Up:
 Clone repository and replace your current `nvim` folder with this one
 mv ~/.config/nvim ~/.config/nvim-old
@@ -49,7 +51,7 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>da`                              | **Toggle** between current line only and all lines diagnostics         |
 |                            | `<leader>db`                              | **Diagnostics** (current document) picker                              |
 |                            | `<leader>dw`                              | **Diagnostics** (workspace) picker                                     |
-| **Git/Diff**               | `<leader>dv`                              | **Open** diff'd files pane                                                    |
+| **Git/Diff**               | `<leader>dl`                              | **Open** diff'd files pane                                                    |
 | **Git/Diff**               | `<leader>dm`                              | **Open** diff'd files menu                                                    |
 |                            | `<leader>uc`                              | **Clear** diff markings from current buffer                            |
 | **CLI Legend**            | `<leader>cl`                              | **Toggle** custom cli legend on/off                                          |
@@ -59,9 +61,6 @@ if hitting error code 131, try uninstalling and reinstalling dotnet from the off
 |                            | `<leader>h1-9`                            | **Navigate** to argument 1-9                                           |
 |                            | `<C-h>1-9`                                | **Move** current buffer to position 1-9                                |
 |                            | `<C-h>a-z`                                | **Move** current buffer to position 10-35 (a=10, b=11, ..., z=35)      |
-
-- `<leader>` : your leader key (space by default)
-- Use `<leader>dv` to toggle diffview, `<leader>uv` to toggle unified diff view, `<leader>uc` to clear diff markings
 
 ### Argpoon (Argument List Management)
 See keybinds table above for all argpoon navigation and repositioning shortcuts.
