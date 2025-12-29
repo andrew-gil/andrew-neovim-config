@@ -2,6 +2,9 @@
 -- note that due to hard coded context ceiling (found no viable alternative), files above 3000 lines might not show all lines
 -- heavily depends on git-delta, specifically the line number output. That contract changes, this code breaks. Can do alternative solutions but would miss syntax highlighting. Would need to modify parsing to account for different text.
 
+-- TODO, ideas for future implementation
+-- jump between hunks (either using git delta syntax parsing or using git diff porcelain outputs)
+
 local M = {}
 
 local is_diffable_filepath = function(path)
@@ -88,7 +91,7 @@ M.run_diff_bat = function(filepath)
         cmd = 'git diff -U3000 --no-index /dev/null ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
     else
         -- Tracked file
-        local modified_files = vim.fn.system({'git', 'diff', 'HEAD', '--name-only', '--no-index', '--', vim.fn.shellescape(filepath)})
+        local modified_files = vim.fn.system({'git', 'diff', 'HEAD', '--name-only', '--', filepath})
         if modified_files ~= nil and modified_files ~= '' then
             cmd = 'git diff -U3000 HEAD -- ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
         end
