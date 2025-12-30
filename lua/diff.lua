@@ -1,15 +1,13 @@
--- due to some manual parsing shenanigans (is_diffable_filepath), this will only work on posix filesystems (not windows)
--- note that due to hard coded context ceiling (found no viable alternative), files above 3000 lines might not show all lines
--- heavily depends on git-delta, specifically the line number output. That contract changes, this code breaks. Can do alternative solutions but would miss syntax highlighting. Would need to modify parsing to account for different text.
+-- Homemade git diff viewing experience. makes keybinds for git status, viewing a diff of a file while on it, and exposes a command to compare against a branch
 
 -- TODO, ideas for future implementation
--- jump between hunks (either using git delta syntax parsing or using git diff porcelain outputs)
+-- keybinds to jump between hunks (either using git delta syntax parsing or using git diff porcelain outputs)
+-- ideally, remove manual syntax parsing/pattern finding. Investigate any metadata coming out of git-delta that we can use
+-- some sort of staging functionality? There are many plugins that handle this already, may not be necessary unless I plan on completely tossing git/fzf plugins.
 
 local M = {}
 
 local is_diffable_filepath = function(path)
-    -- because lua does not have regex, we may struggle with this bit
-    -- simplest for now will be to check that end of string is not a slash, and that string contains at least one character
     if path == nil or string.sub(path, -1) == "/" or path == '' then
         return false
     end
@@ -17,10 +15,10 @@ local is_diffable_filepath = function(path)
 end
 
 -- custom labeling function, uses the first letter of the filename, while allowing the filepath to remain the item
-M.label_filepath_item = function()
+local label_filepath_item = function()
     local used_labels = {}
     return function(item)
-        -- Extract just the filename (everything after the last forward slash)
+        -- extract just the filename (everything after the last forward slash)
         local filename = item:match("([^/]+)$") or item
         local i = 1
         while i <= #filename do
@@ -36,17 +34,20 @@ M.label_filepath_item = function()
     end
 end
 
-M.get_diffed_files = function()
-    -- Get modified files
-    local modified = vim.fn.system({'git', 'diff', 'HEAD', '--name-only'})
-    -- Get new untracked files
-    local untracked = vim.fn.system({'git', 'ls-files', '-o', '--exclude-standard'})
+-- by default, gets modified files against head
+local get_diffed_files = function(branch_name)
+    -- diffed files
+    local diffed = vim.fn.system({'git', 'diff', branch_name ~= nil and branch_name or 'HEAD', '--name-only'})
+    -- new untracked files
+    local untracked = ''
+    if branch_name then
+        untracked = vim.fn.system({'git', 'ls-files', '-o', '--exclude-standard'})
+    end
 
     local files = {}
     local seen = {}
 
-    -- Parse the concatenated string into a table
-    for match in (modified .. untracked):gmatch('[^\n]+') do
+    for match in (diffed .. untracked):gmatch('[^\n]+') do
         if not seen[match] and match ~= '' then
             seen[match] = true
             table.insert(files, match)
@@ -56,44 +57,53 @@ M.get_diffed_files = function()
     return files
 end
 
-M.create_diff_menu_pane = function()
-    local mods = M.get_diffed_files()
+-- branch_name is optional. If omitted, will compare against head, and include untracked files
+M.create_diff_menu_pane = function(diffing_function, branch_name)
+    if diffing_function == nil then
+        print('ERROR: must declare a function to diff the file')
+    end
+    local mods = get_diffed_files(branch_name)
+    -- note that label_item, win_predefined are custom opts on a custom vim-ui-select
+    -- A vanilla vim.ui.select will simply label these with numbers, and show them where they want to.
+    -- We are labeling these with letters, and showing them in a horizontal split.
     vim.ui.select(mods, {
         prompt = 'Modified Files',
-        label_item = M.label_filepath_item,
+        label_item = label_filepath_item,
         win_predefined='hsplit',
     }, function(filepath, _)
         if filepath == nil then
             return
         end
+        -- TODO sometimes, files will be returned in a diff that do not exist, because they were removed. 
+        -- account for that, in the labeling and the handling here; just print something instead of editing.
         vim.cmd('e ' .. filepath)
         local cur_win = vim.api.nvim_get_current_win()
-        M.create_diff_menu_pane()
-        --shift focus back to window
+        M.create_diff_menu_pane(diffing_function, branch_name)
+        -- shift focus back to window
         vim.api.nvim_set_current_win(cur_win)
-        M.run_diff_bat(filepath)
+        diffing_function(filepath, branch_name)
     end)
 end
 
-M.run_diff_bat = function(filepath)
-    -- todo validate filepath is a path not directory
+M.run_diff_against = function(filepath, branch_name)
     local is_diffable = is_diffable_filepath(filepath)
     if is_diffable == false then
         print('WARNING: cannot run diff on a directory')
         return
     end
-    -- Check if file is tracked to determine which git diff command to use
+    -- check if file is tracked to determine which git diff command to use
     local is_tracked = vim.fn.system({'git', 'ls-files', '--', filepath})
     local cmd
 
     if is_tracked == '' or is_tracked == '\n' then
-        -- Untracked file
-        cmd = 'git diff -U3000 --no-index /dev/null ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
+        -- untracked file
+        cmd = 'git diff -U3000 --no-index /dev/null ' .. vim.fn.shellescape(filepath)
     else
-        -- Tracked file
-        local modified_files = vim.fn.system({'git', 'diff', 'HEAD', '--name-only', '--', filepath})
+        -- tracked file
+        local modified_files = vim.fn.system({'git', 'diff', branch_name ~= nil and branch_name or 'HEAD', '--name-only', '--', filepath})
         if modified_files ~= nil and modified_files ~= '' then
-            cmd = 'git diff -U3000 HEAD -- ' .. vim.fn.shellescape(filepath) .. ' | delta --line-numbers --paging=never | sed "1,7d"'
+            -- note that due to hard coded context ceiling (found no viable alternative), files above 3000 lines might not show all lines
+            cmd = 'git diff -U3000 ' .. (branch_name ~= nil and branch_name or 'HEAD') .. ' -- ' .. vim.fn.shellescape(filepath)
         end
     end
 
@@ -102,6 +112,13 @@ M.run_diff_bat = function(filepath)
         return
     end
 
+    M.display_diff_followcursor(cmd)
+end
+
+M.display_diff_followcursor = function(cmd)
+    local delta_cmd = cmd .. ' | delta --line-numbers --paging=never | sed "1,7d"'
+
+    -- get previous cursor state
     vim.cmd('normal! zz')
     local cur_buf = vim.api.nvim_get_current_buf()
     local cur_cursor_pos = vim.api.nvim_win_get_cursor(0) -- output {row, column}, 1-indexed
@@ -113,7 +130,8 @@ M.run_diff_bat = function(filepath)
 
     -- another closure functionality. stores last valid currentdiff line we were on while perusing the term_buf so we can jump to it when we go back.
     local last_valid_currentdiff_cursor_pos
-    vim.fn.jobstart(cmd, {
+
+    vim.fn.jobstart(delta_cmd, {
         term = true,
         on_exit = function()
             vim.schedule(function()
@@ -163,11 +181,22 @@ M.run_diff_bat = function(filepath)
 end
 
 M.setup = function()
-    vim.keymap.set('n', '<leader>dm', M.create_diff_menu_pane)
-    -- these come in as relative paths.
-    vim.keymap.set('n', '<leader>dl', function()
-        M.run_diff_bat(vim.fn.expand('%:p'))
+    vim.keymap.set('n', '<leader>dm', function()
+        M.create_diff_menu_pane(M.run_diff_against)
     end)
+
+    vim.keymap.set('n', '<leader>dl', function()
+        M.run_diff_against(vim.fn.expand('%:p'))
+    end)
+
+    vim.cmd([[cabbrev dm DiffMenu]])
+    vim.api.nvim_create_user_command('DiffMenu', function(opts)
+        local branch_name = opts.args ~= '' and opts.args or nil
+        M.create_diff_menu_pane(M.run_diff_against, branch_name)
+    end, {
+        nargs = '?',
+        desc = 'Open Diff Menu against a branch.'
+    })
 end
 
 return M
