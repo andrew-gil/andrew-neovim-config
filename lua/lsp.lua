@@ -130,7 +130,8 @@ vim.keymap.set('n', '<leader>of', omnisharpextended.lsp_references,
 vim.keymap.set('n', '<leader>oi', omnisharpextended.lsp_implementation,
   { noremap = true, silent = true, desc = 'omnisharp implementation' })
 
--- Stop LSP client for current buffer
+--- Stop LSP client for current buffer
+--- Presents a vim.ui.select menu to choose which LSP client to stop if multiple are attached
 local function stop_buffer_lsp()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
 

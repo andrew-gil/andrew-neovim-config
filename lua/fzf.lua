@@ -11,6 +11,9 @@ local M = {}
 
 --todo pass in custom function to --preview rather than bat, that uses treesitter to properly find the best code to preview
 --currently writing standalone command line util to do this. In progress. Can indefinitely use basic bat preview.
+
+--- Open fzf file picker in a floating window
+--- Searches for files using fd, excluding .git and node_modules
 M.files = function()
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': 'fd --type f --hidden --exclude .git --exclude node_modules',
@@ -25,6 +28,9 @@ end
 -- this doesn't do what fzf-lua git status used to do. I want this to do just one thing, which is give me a filtered list to go to files I am currently writing to.
 -- when something is staged, it shows only staged changes. If it also has unstaged changes, it will not show.
 -- this is only for searching. If I want a staging manager like what fzf-lua used to do, use a prebuilt tool like lazygit or fugitive
+
+--- Open fzf picker for git modified files (unstaged and staged)
+--- Shows diff preview for each file
 M.git_modified = function()
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': '(git ls-files -m; git diff --cached --name-only) | sort -u',
@@ -36,6 +42,8 @@ M.git_modified = function()
         \ }))]])
 end
 
+--- Open fzf picker for listed buffers
+--- Shows buffer preview using bat
 M.buffers = function()
     local buffers = vim.api.nvim_list_bufs()
     print(buffers)
@@ -49,6 +57,8 @@ M.buffers = function()
         \ }))]])
 end
 
+--- Open fzf picker for buffers that are git-tracked files
+--- Note: Currently has empty source - may be incomplete implementation
 M.buffer_gitfiles = function()
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': '',
@@ -60,6 +70,8 @@ M.buffer_gitfiles = function()
         \ }))]])
 end
 
+--- Open fzf picker for available colorschemes
+--- Applies selected colorscheme immediately
 M.colorschemes = function()
     vim.cmd([[call fzf#run(fzf#wrap({
         \ 'source': map(split(globpath(&rtp, 'colors/*.vim') . '\n' . globpath(&rtp, 'colors/*.lua')), 'fnamemodify(v:val, '':t:r'')'),
@@ -67,6 +79,8 @@ M.colorschemes = function()
         \ }))]])
 end
 
+--- Setup keymaps for basic fzf.vim functionality
+--- Keymaps: <leader><leader> (files), <leader>gs (git status), <leader>bf (buffers), <leader>cs (colorschemes)
 M.setup_fzf = function()
     vim.keymap.set('n', '<leader><leader>', M.files)
     vim.keymap.set('n', '<leader>gs', M.git_modified)
@@ -74,6 +88,13 @@ M.setup_fzf = function()
     vim.keymap.set('n', '<leader>cs', M.colorschemes)
 end
 
+--- Setup configuration and keymaps for fzf-lua plugin
+--- Configures fzf-lua with custom keymaps and sets up extensive keybindings for:
+--- - File/buffer navigation
+--- - Git integration
+--- - Grep/search functionality
+--- - LSP features
+--- - Diagnostics and utilities
 M.setup_fzf_lua = function()
     local fzf = require('fzf-lua')
     fzf.setup({

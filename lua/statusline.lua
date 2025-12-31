@@ -1,12 +1,19 @@
 require('argpoon')
 local cmp = {} -- statusline components
 
+--- Global function to retrieve and call statusline component functions
+--- Used in statusline format strings via %{%v:lua._statusline_component("name")%}
+--- @param name string The component name to retrieve from the cmp table
+--- @return string The result of calling the component function
 function _G._statusline_component(name)
     return cmp[name]()
 end
 
 local hi_pattern = '%%#%s#%s%%*'
 
+--- Display diagnostic status for the current buffer
+--- Shows error count, warning count, or OK indicator with appropriate highlighting
+--- @return string Formatted diagnostic status string with highlight groups
 function cmp.diagnostic_status()
     local ignore = {
         ['c'] = true, -- command mode
@@ -33,10 +40,15 @@ function cmp.diagnostic_status()
     return hi_pattern:format('DiagnosticOk', '  ')
 end
 
+--- Display current line and column position
+--- @return string Formatted position string with Search highlight group
 function cmp.line_position()
     return hi_pattern:format('Search', ' %3l:%-3c ')
 end
 
+--- Display argpoon (harpoon) status showing current buffer's position in argument list
+--- Shows numbered/lettered indicator if buffer is in arglist, or '~' if not
+--- @return string Formatted argpoon status with appropriate icon and highlighting
 function cmp.harpoon()
     -- if in arg list, return the arg number. Else, return something else
     for i = 0,vim.fn.argc()-1 do

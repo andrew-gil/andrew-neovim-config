@@ -7,6 +7,9 @@
 
 local M = {}
 
+--- Check if a path is a valid file path for diffing (not a directory or empty)
+--- @param path string|nil The file path to validate
+--- @return boolean True if the path is a diffable file, false otherwise
 local is_diffable_filepath = function(path)
     if path == nil or string.sub(path, -1) == "/" or path == '' then
         return false
@@ -14,7 +17,9 @@ local is_diffable_filepath = function(path)
     return true
 end
 
--- custom labeling function, uses the first letter of the filename, while allowing the filepath to remain the item
+--- Factory function that creates a label extractor for file paths
+--- Extracts unique single-character labels from filenames (not full paths)
+--- @return function A function that takes a filepath and returns a single-character label
 local label_filepath_item = function()
     local used_labels = {}
     return function(item)
@@ -34,7 +39,9 @@ local label_filepath_item = function()
     end
 end
 
--- by default, gets modified files against head
+--- Get list of modified and untracked files
+--- @param branch_name string|nil Branch to compare against (defaults to HEAD if nil). If nil, includes untracked files
+--- @return table Array of file paths that have been modified or are untracked
 local get_diffed_files = function(branch_name)
     -- diffed files
     local diffed = vim.fn.system({'git', 'diff', branch_name ~= nil and branch_name or 'HEAD', '--name-only'})
@@ -57,7 +64,9 @@ local get_diffed_files = function(branch_name)
     return files
 end
 
--- branch_name is optional. If omitted, will compare against head, and include untracked files
+--- Create an interactive menu pane for selecting and viewing diffs of modified files
+--- @param diffing_function function Function to call for displaying diffs, receives (filepath, branch_name)
+--- @param branch_name string|nil Optional branch to compare against (defaults to HEAD)
 M.create_diff_menu_pane = function(diffing_function, branch_name)
     if diffing_function == nil then
         print('ERROR: must declare a function to diff the file')
@@ -85,6 +94,10 @@ M.create_diff_menu_pane = function(diffing_function, branch_name)
     end)
 end
 
+--- Run a git diff for the specified file against a branch
+--- Handles both tracked and untracked files
+--- @param filepath string The file path to diff
+--- @param branch_name string|nil Optional branch to compare against (defaults to HEAD)
 M.run_diff_against = function(filepath, branch_name)
     local is_diffable = is_diffable_filepath(filepath)
     if is_diffable == false then
@@ -115,6 +128,9 @@ M.run_diff_against = function(filepath, branch_name)
     M.display_diff_followcursor(cmd)
 end
 
+--- Display git diff output in a terminal buffer with cursor position syncing
+--- Creates a terminal buffer running delta, syncs cursor position between source and diff
+--- @param cmd string The git diff command to execute
 M.display_diff_followcursor = function(cmd)
     local delta_cmd = cmd .. ' | delta --line-numbers --paging=never | sed "1,7d"'
 
@@ -180,6 +196,9 @@ M.display_diff_followcursor = function(cmd)
     end, { buffer = term_buf, noremap = true, silent = true })
 end
 
+--- Setup keymaps and commands for diff functionality
+--- Keymaps: <leader>dm for diff menu, <leader>dl for diff current file
+--- Commands: :DiffMenu [branch] to compare against a branch
 M.setup = function()
     vim.keymap.set('n', '<leader>dm', function()
         M.create_diff_menu_pane(M.run_diff_against)

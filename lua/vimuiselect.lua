@@ -1,7 +1,8 @@
 local M = {}
 
--- Factory function that creates a label_item function with its own used_labels state
--- Returns a function that extracts a unique single-character label from each item
+--- Factory function that creates a label_item function with its own used_labels state
+--- @param format_item function Function to format items to strings before extracting labels
+--- @return function A function that extracts a unique single-character label from each item
 M.label_item_default = function(format_item)
     local used_labels = {}
     return function(item)
@@ -20,6 +21,11 @@ M.label_item_default = function(format_item)
     end
 end
 
+--- Get window options for the ui_select window
+--- @param win_predefined string Window type: 'center', 'bottom', or 'hsplit'
+--- @param prompt string|nil The prompt text to display in the window title
+--- @param height number The height of the window
+--- @return table Window options table for nvim_open_win
 M.get_opts = function(win_predefined, prompt, height)
     -- creating buffer ui
     local width = math.min(90, vim.o.columns - 4)
@@ -63,13 +69,16 @@ M.get_opts = function(win_predefined, prompt, height)
     end
 end
 
---opts: 
---(standard) prompt: title
---(standard) kind: arbitrary hint string
---(standard) format_item: for the line to display 
---label_item (not standard) which is a custom thing I can pass in to define what's shown and the shortcut. it should be one character.
---win_opts (not standard) so the caller can decide where they want their window to go
---win_predefined (not standard) can be "center" "bottom" "hsplit"
+--- Custom vim.ui.select implementation with keyboard shortcuts
+--- @param items table List of items to select from
+--- @param opts table Options table with fields:
+---   - prompt (string, optional): Title displayed in the window
+---   - kind (string, optional): Arbitrary hint string (standard vim.ui.select)
+---   - format_item (function, optional): Function to format items for display
+---   - label_item (function, optional): Factory function that returns a label extractor
+---   - win_opts (table, optional): Custom window options to override defaults
+---   - win_predefined (string, optional): Window position: 'center', 'bottom', or 'hsplit'
+--- @param on_choice function Callback function(item, index) called with the selected item and index, or (nil, nil) if cancelled
 M.ui_select = function(items, opts, on_choice)
     -- Validate inputs
     if not items or #items == 0 then
@@ -170,6 +179,8 @@ M.ui_select = function(items, opts, on_choice)
     vim.keymap.set('n', 'k', 'k', opts_map)
 end
 
+--- Get the window ID of the currently active ui_select window
+--- @return number|nil The window ID if a ui_select window is open, nil otherwise
 M.get_ui_select_winid = function()
     local ns_id = vim.api.nvim_create_namespace('ui_select_labels')
     local buffers = vim.api.nvim_list_bufs()
@@ -190,7 +201,8 @@ M.get_ui_select_winid = function()
     return nil
 end
 
--- Setup function to override vim.ui.select
+--- Setup function to override vim.ui.select and configure keymaps
+--- Sets up ',,' keymap to jump to ui_select window if one is open
 function M.setup()
     vim.ui.select = M.ui_select
     vim.keymap.set('n', ',,', function()

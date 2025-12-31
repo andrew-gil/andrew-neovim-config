@@ -1,4 +1,9 @@
 -- file search --
+--- Custom find function using fd for Vim's :find command
+--- Searches for files using fd and filters results by pattern match
+--- @param cmdarg string The search pattern to filter files (case-insensitive)
+--- @param cmdcomplete any Command completion argument (unused)
+--- @return table Array of matching file paths
 function UseFd(cmdarg, cmdcomplete)
     local all_files = vim.fn.systemlist('fd --type f --hidden --exclude .git --exclude node_modules')
 

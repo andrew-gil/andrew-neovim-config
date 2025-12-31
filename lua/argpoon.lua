@@ -1,5 +1,7 @@
 --homemade harpoon, requires statusline.lua for full functionality
 
+--- Get the current argument list as a Lua table
+--- @return table Array of argument file paths (1-indexed)
 local function get_args()
 	local args = {}
     for i = 0,vim.fn.argc()-1 do
@@ -25,6 +27,10 @@ vim.keymap.set('n', '<leader>hs', function()
 	local cur_bufname = vim.fn.bufname()
     local args = get_args()
 
+    --- Convert argument index to single-character label
+    --- Indices 1-9 map to '1'-'9', 10-35 map to 'a'-'z', others to string number
+    --- @param i number The argument index
+    --- @return string Single-character label for the argument
     local function index_to_label(i)
         if i < 10 or i > 35 then
             return tostring(i)
@@ -78,10 +84,14 @@ local function wrap(func, i)
     end
 end
 
+--- Navigate to the nth argument in the argument list
+--- @param n number The argument position to navigate to (1-indexed)
 local function n_arg(n)
     vim.cmd('silent! '..n..'argument')
 end
 
+--- Move the current buffer to position n in the argument list
+--- @param n number Target position in the argument list (1-indexed)
 local function move_to_arg(n)
 	local cur_bufname = vim.fn.bufname()
     local args = get_args()
@@ -131,6 +141,8 @@ end
 -- Save and restore argument list (directory-specific)
 local history_file = vim.fn.expand('~/.local/share/nvim/argpoon_history.json')
 
+--- Load argument history from JSON file
+--- @return table Dictionary mapping directory paths to argument lists, or empty dict if file doesn't exist/is invalid
 local function load_history()
     local file = io.open(history_file, 'r')
     if not file then
@@ -153,6 +165,9 @@ local function load_history()
     return history
 end
 
+--- Save argument history to JSON file
+--- @param history table Dictionary mapping directory paths to argument lists
+--- @return boolean True if save succeeded, false otherwise
 local function save_history(history)
     -- Ensure directory exists
     local dir = vim.fn.fnamemodify(history_file, ':h')
@@ -171,6 +186,8 @@ local function save_history(history)
     return true
 end
 
+--- Save the current argument list for the current working directory
+--- Creates/updates entry in history file mapping cwd to current args
 local function save_args()
     local cwd = vim.fn.getcwd()
     local args = {}
@@ -190,6 +207,8 @@ local function save_args()
     end
 end
 
+--- Restore the argument list for the current working directory from history
+--- Replaces current argument list with saved args for cwd if they exist
 local function restore_args()
     local cwd = vim.fn.getcwd()
     local history = load_history()
