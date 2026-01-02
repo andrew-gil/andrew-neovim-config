@@ -13,6 +13,7 @@ Plug('https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git')
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 -- searching
 Plug('ibhagwan/fzf-lua')
+Plug('/home/agil/code/deltaview.nvim.git/main')
 -- nice to haves
 Plug('fabijanzulj/blame.nvim')
 -- color schemes
@@ -33,5 +34,4 @@ require('lsp')
 require('make')
 require('blametoggle')
 require('fzf').setup_fzf_lua()
-require('diff').setup()
 require('vimuiselect').setup()
